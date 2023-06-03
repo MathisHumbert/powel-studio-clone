@@ -1,0 +1,49 @@
+block variables 
+
+doctype html 
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+    base(href="/")
+
+    title="Powell—Studio - Multidisciplinary Design Studio"
+
+    //- description for google
+    meta(name="description" content="Branding / Type / Web Design / Graphic Design / Art Direction / Materials / Objects / Digital / Social Media")
+
+    //- website icon
+    //- <link rel="icon" type="image/svg+xml" href="/favicon_685b6ae0.svg">
+    //- link(rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png")
+    //- link(rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png")
+    //- link(rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png")
+    //- link(rel="manifest" href="/site.webmanifest")
+    //- link(rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff3a00")
+    //- meta(name="msapplication-TileColor" content="#f4d8cc")
+    //- meta(name="theme-color" content="#f4d8cc")
+    //- twitter and facebook tags
+    //- meta(property="og:type" content="website")
+    //- meta(property="og:title" content=meta.data.title)
+    //- meta(property="og:description" content=meta.data.description)
+    //- meta(property="og:image" content=meta.data.image ? meta.data.image.url : '')
+
+    //- meta(name="twitter:card" content="summary_large_image")
+    //- meta(name="twitter:title" content=meta.data.title)
+    //- meta(name="twitter:description" content=meta.data.description)
+    //- meta(name="twitter:image" content=meta.data.image ? meta.data.image.url : '')
+
+    link(href="main.css" rel="stylesheet")
+
+  body
+    //- (class=isDesktop ? 'desktop' : isTablet ? 'tablet' : isPhone ? 'phone' : '')
+    //- include ./layouts/preloader
+    //- include ./layouts/navigation
+
+    .content#content(data-template=template)
+      block content
+    
+    //- script.
+    //-   window.ASSETS = !{JSON.stringify(assets).replace(/<\//g, "<\\/")}
+
+    script(src='main.js')

@@ -1,0 +1,9 @@
+extends ../base.pug 
+
+block variables 
+  - var template = 'project'
+
+block content
+  .project
+    .project__wrapper
+      h1=project.data.name[0].text

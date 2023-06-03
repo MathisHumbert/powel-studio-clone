@@ -1,0 +1,36 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html {
+  // @extend %cover;
+
+  background: $main-bg-color;
+  color: $main-text-color;
+  // position: fixed;
+  // overflow: hidden;
+}
+
+body {
+  // @extend %cover;
+  // position: fixed;
+}
+
+a {
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+canvas {
+  position: relative;
+  pointer-events: none;
+  z-index: z('canvas');
+}
+
+.content {
+  // @extend %cover;
+}
