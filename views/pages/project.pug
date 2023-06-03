@@ -6,4 +6,28 @@ block variables
 block content
   .project
     .project__wrapper
-      h1=project.data.name[0].text
+      section.project__gallery
+        .project__gallery__wrapper
+          each gallery, index in project.data.body
+            if index == 0
+                each media in gallery.items 
+                  article.project__gallery__item
+                    figure.project__gallery__media 
+                      img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
+                      p.project__gallery__text=media.text
+            if index !== 0
+              .project__gallery__row 
+                  each media in gallery.items 
+                    .project__galerry__col
+                      article.project__gallery__item
+                          figure.project__gallery__media 
+                            img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
+                            p.project__gallery__text=media.text
+        a.project__gallery__link(href=Link(project.data.next_link.link_type))=`next project: ${project.data.next_text}`
+      section.project__content
+        h1.project__content__title=project.data.name
+        p.project__content__text=project.data.category
+        p.project__content__text=project.data.description
+        .project__content__details 
+          each detail in project.data.details
+            p.project__content__text!=detail.text.replace(/\n/g, '<br>')

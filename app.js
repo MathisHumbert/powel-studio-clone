@@ -50,8 +50,6 @@ app.get('/project/:id', async (req, res) => {
 
   const project = await api.getByUID('project', req.params.id, {});
 
-  console.log(project.data);
-
   res.render('pages/project', { project });
 });
 app.listen(port, () => {

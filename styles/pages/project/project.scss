@@ -1,0 +1,63 @@
+.project {
+  @extend %page;
+}
+
+.project__wrapper {
+  @extend %page__wrapper;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project__gallery {
+  width: 100%;
+  padding: 0 25px;
+
+  flex: 0 0 75%;
+}
+
+.project__gallery__wrapper {
+}
+
+.project__gallery__row {
+}
+
+.project__galerry__col {
+}
+
+.project__gallery__item {
+}
+
+.project__gallery__media {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.project__gallery__media__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project__gallery__text {
+}
+
+.project__gallery__link {
+}
+
+.project__content {
+  width: 100%;
+  flex: 0 0 25%;
+  padding: 0 25px;
+}
+
+.project__content__title {
+}
+
+.project__content__text {
+}
+
+.project__content__details {
+}
