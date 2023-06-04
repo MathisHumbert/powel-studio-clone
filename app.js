@@ -37,20 +37,32 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+const handleRequest = async (api) => {
+  // const meta = await api.getSingle('meta');
+  // const preloader = await api.getSingle('preloader');
+
+  const navigation = await api.getByUID('navigation', 'nav');
+  const footer = await api.getByUID('navigation', 'footer');
+
+  return { navigation, footer };
+};
+
 app.get('/', async (req, res) => {
   const api = initApi(req);
 
   const home = await api.getSingle('home');
+  const defaults = await handleRequest(api);
 
-  res.render('pages/home', { home });
+  res.render('pages/home', { ...defaults, home });
 });
 
 app.get('/project/:id', async (req, res) => {
   const api = initApi(req);
 
-  const project = await api.getByUID('project', req.params.id, {});
+  const project = await api.getByUID('project', req.params.id);
+  const defaults = await handleRequest(api);
 
-  res.render('pages/project', { project });
+  res.render('pages/project', { ...defaults, project });
 });
 app.listen(port, () => {
   console.log(`server is listening on port ${port}`);

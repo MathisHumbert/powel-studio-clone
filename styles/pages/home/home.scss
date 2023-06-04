@@ -3,14 +3,15 @@
 }
 
 .home__wrapper {
-  @extend %page__wrapper;
+  // @extend %page__wrapper;
 }
 
 .home__header {
   min-height: 90vh;
+  padding: 0 25px;
 
   svg {
-    width: calc(100% - 20px);
+    width: calc(100% + 20px);
     height: auto;
     margin-left: -20px;
     margin-top: 29px;
@@ -21,7 +22,6 @@
 .home__project {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -25px;
 }
 
 .home__project__list {

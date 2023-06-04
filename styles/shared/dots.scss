@@ -1,0 +1,28 @@
+%round-dot {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: -1em;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $main-text-color;
+  opacity: 0;
+
+  &:hover {
+    animation: blink 0.2s linear infinite;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
