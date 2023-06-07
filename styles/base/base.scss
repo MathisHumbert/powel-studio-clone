@@ -6,18 +6,18 @@
 }
 
 html {
-  // @extend %cover;
+  @extend %cover;
 
   background: $main-bg-color;
   color: $main-text-color;
-  // position: fixed;
-  // overflow: hidden;
+  position: fixed;
+  overflow: hidden;
 }
 
 body {
-  // @extend %cover;
+  @extend %cover;
 
-  // position: fixed;
+  position: fixed;
 }
 
 a {
@@ -33,5 +33,5 @@ canvas {
 }
 
 .content {
-  // @extend %cover;
+  @extend %cover;
 }

@@ -19,11 +19,12 @@ block content
               .project__gallery__row 
                   each media in gallery.items 
                     .project__galerry__col
-                      article.project__gallery__item
-                          figure.project__gallery__media 
-                            img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
-                            p.project__gallery__text=media.text
-        a.project__gallery__link(href=Link(project.data.next_link.link_type))=`next project : ${project.data.next_text}`
+                      if media.image.url != undefined
+                        article.project__gallery__item
+                            figure.project__gallery__media 
+                              img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
+                              p.project__gallery__text=media.text
+        a.project__gallery__link(href=Link(project.data.next_link))=`next project : ${project.data.next_text}`
       section.project__content
         .project__content__wrapper
           h1.project__content__title=project.data.name

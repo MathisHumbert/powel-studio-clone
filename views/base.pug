@@ -35,8 +35,7 @@ html(lang="en")
 
     link(href="main.css" rel="stylesheet")
 
-  body
-    //- (class=isDesktop ? 'desktop' : isTablet ? 'tablet' : isPhone ? 'phone' : '')
+  body(class=isDesktop ? 'desktop' : isTablet ? 'tablet' : isPhone ? 'phone' : '')
     //- include ./layouts/preloader
     //- include ./layouts/navigation
 

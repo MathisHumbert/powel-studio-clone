@@ -3,11 +3,21 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
+const errorHandler = require('errorhandler');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const uaParser = require('ua-parser-js');
 const Prismic = require('@prismicio/client');
 const PrismicH = require('@prismicio/helpers');
 
 const app = express();
 const port = 3000;
+
+app.use(errorHandler());
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(methodOverride());
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -28,6 +38,12 @@ const HandleLinkResolver = (doc) => {
 };
 
 app.use((req, res, next) => {
+  const ua = uaParser(req.headers['user-agent']);
+
+  res.locals.isDesktop = ua.device.type === undefined;
+  res.locals.isTablet = ua.device.type === 'tablet';
+  res.locals.isPhone = ua.device.type === 'mobile';
+
   res.locals.PrismicH = PrismicH;
   res.locals.Link = HandleLinkResolver;
 
