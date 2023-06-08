@@ -3,7 +3,7 @@ import each from 'lodash/each';
 import Prefix from 'prefix';
 import normalizeWheel from 'normalize-wheel';
 
-// import DetectionManager from './Detection';
+import DetectionManager from './Detection';
 export default class Page {
   constructor({ element, elements, id, isScrollable = true }) {
     this.selector = element;
@@ -23,6 +23,8 @@ export default class Page {
     this.isDown = false;
 
     this.transformPrefix = Prefix('transform');
+
+    this.isDesktop = DetectionManager.isDesktop();
   }
 
   create() {
@@ -34,7 +36,7 @@ export default class Page {
       current: 0,
       target: 0,
       limit: 0,
-      ease: 0.1,
+      ease: 0.05,
     };
 
     each(this.selectorChildren, (entry, key) => {
@@ -56,15 +58,10 @@ export default class Page {
     });
 
     this.createAnimations();
-    this.createPreloader();
   }
 
   createAnimations() {
     // create reusable animations
-  }
-
-  createPreloader() {
-    // load images
   }
 
   /**
@@ -96,33 +93,33 @@ export default class Page {
   onResize() {
     if (this.elements.wrapper) {
       this.scroll.limit =
-        this.elements.wrapper.clientHeight - window.innerWidth;
+        this.elements.wrapper.clientHeight - window.innerHeight;
     }
   }
 
-  // onTouchDown(event) {
-  //   if (!DetectionManager.isDesktop()) return;
+  onTouchDown(event) {
+    if (this.isDesktop) return;
 
-  //   this.isDown = true;
+    this.isDown = true;
 
-  //   this.scroll.position = this.scroll.current;
-  //   this.start = event.touches ? event.touches[0].clientY : event.clientY;
-  // }
+    this.scroll.position = this.scroll.current;
+    this.start = event.touches ? event.touches[0].clientY : event.clientY;
+  }
 
-  // onTouchMove(event) {
-  //   if (!DetectionManager.isDesktop() && !this.isDown) return;
+  onTouchMove(event) {
+    if (this.isDesktop || !this.isDown) return;
 
-  //   const y = event.touches ? event.touches[0].clientY : event.clientY;
-  //   const distance = this.start - y;
+    const y = event.touches ? event.touches[0].clientY : event.clientY;
+    const distance = this.start - y;
 
-  //   this.scroll.target = this.scroll.position + distance;
-  // }
+    this.scroll.target = this.scroll.position + distance;
+  }
 
-  // onTouchUp() {
-  //   if (!DetectionManager.isDesktop()) return;
+  onTouchUp() {
+    if (this.isDesktop) return;
 
-  //   this.isDown = false;
-  // }
+    this.isDown = false;
+  }
 
   onWheel(event) {
     const { pixelY } = normalizeWheel(event);
@@ -156,6 +153,12 @@ export default class Page {
       this.elements.wrapper.style[
         this.transformPrefix
       ] = `translateY(-${this.scroll.current}px)`;
+    }
+
+    if (this.elements.scroll) {
+      this.elements.scroll.style[
+        this.transformPrefix
+      ] = `translateY(${this.scroll.current}px)`;
     }
 
     this.scroll.last = this.scroll.current;

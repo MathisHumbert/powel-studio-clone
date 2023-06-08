@@ -1,21 +1,43 @@
-import Home from './pages/Home';
-import Project from './pages/Project';
+import each from 'lodash/each';
+import imagesLoaded from 'imagesloaded';
 
+import Home from 'pages/Home';
+import Project from 'pages/Project';
+
+import Canvas from 'components/Canvas';
 class App {
   constructor() {
     this.createContent();
 
     this.createPages();
     this.createPreloader();
+    this.createCanvas();
 
     this.addEventsListeners();
+    this.addLinkListeners();
 
     this.update();
   }
 
   createPreloader() {
     // create Preloader
-    this.onPreloaded();
+    const imgLoaded = imagesLoaded(this.content);
+
+    imgLoaded.on('done', () => {
+      this.onPreloaded();
+    });
+  }
+
+  createLoader() {
+    const imgLoaded = imagesLoaded(this.content);
+
+    imgLoaded.on('done', () => {
+      this.onLoaded();
+    });
+  }
+
+  createCanvas() {
+    this.canvas = new Canvas({ template: this.template });
   }
 
   createContent() {
@@ -30,7 +52,7 @@ class App {
     };
 
     this.page = this.pages[this.template];
-    this.page.create();
+    this.page.create(true);
   }
 
   /**
@@ -39,16 +61,67 @@ class App {
   onPreloaded() {
     this.onResize();
 
+    this.canvas.onPreloaded();
+
     this.page.show();
   }
 
-  onPopState() {}
+  onLoaded() {
+    this.onResize();
 
-  onChange() {}
+    this.page.show();
+  }
+
+  onPopState() {
+    this.onChange({
+      url: window.location.pathname,
+      push: false,
+    });
+  }
+
+  async onChange({ url, push }) {
+    this.canvas.onChangeStart();
+
+    await this.page.hide();
+
+    const request = await window.fetch(url);
+
+    if (request.status === 200) {
+      const html = await request.text();
+      const div = document.createElement('div');
+
+      div.innerHTML = html;
+
+      if (push) {
+        window.history.pushState({}, '', url);
+      }
+
+      const divContent = div.querySelector('.content');
+      this.template = divContent.getAttribute('data-template');
+
+      this.content.innerHTML = divContent.innerHTML;
+      this.content.setAttribute('data-template', this.template);
+
+      this.canvas.onChangeEnd(this.template);
+
+      this.page = this.pages[this.template];
+
+      this.page.create(false);
+      this.createLoader();
+
+      this.addLinkListeners();
+    } else {
+      console.log('error');
+    }
+  }
 
   onResize() {
     if (this.page) {
       this.page.onResize();
+    }
+
+    if (this.canvas) {
+      this.canvas.onResize();
     }
   }
 
@@ -85,6 +158,10 @@ class App {
     if (this.page && this.page.update) {
       this.page.update();
     }
+
+    if (this.canvas && this.canvas.update) {
+      this.canvas.update(this.page.scroll);
+    }
   }
 
   /**
@@ -92,6 +169,8 @@ class App {
    */
   addEventsListeners() {
     window.addEventListener('resize', this.onResize.bind(this));
+
+    window.addEventListener('popstate', this.onPopState.bind(this));
 
     window.addEventListener('mousedown', this.onTouchDown.bind(this));
     window.addEventListener('mousemove', this.onTouchMove.bind(this));
@@ -102,6 +181,18 @@ class App {
     window.addEventListener('touchend', this.onTouchUp.bind(this));
 
     window.addEventListener('wheel', this.onWheel.bind(this));
+  }
+
+  addLinkListeners() {
+    const links = document.querySelectorAll('a');
+
+    each(links, (link) => {
+      link.onclick = (e) => {
+        e.preventDefault();
+
+        this.onChange({ url: link.href, push: true });
+      };
+    });
   }
 }
 

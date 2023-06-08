@@ -3,6 +3,8 @@
 }
 
 .project__wrapper {
+  @extend %page__wrapper;
+
   display: flex;
   flex-wrap: wrap;
   padding-top: 182px;

@@ -1,4 +1,4 @@
-import Page from '../../classes/Page';
+import Page from 'classes/Page';
 
 export default class Home extends Page {
   constructor() {
@@ -7,8 +7,6 @@ export default class Home extends Page {
       element: '.home',
       elements: {
         wrapper: '.home__wrapper',
-        header: '.home__header',
-        articles: '.home__project__item',
       },
     });
   }
