@@ -17,6 +17,7 @@ html {
 body {
   @extend %cover;
 
+  font-family: $font-nb-akademie;
   position: fixed;
 }
 
@@ -27,7 +28,11 @@ a {
 }
 
 canvas {
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: z('canvas');
 }

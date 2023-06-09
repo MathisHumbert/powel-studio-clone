@@ -1,5 +1,3 @@
-import { Renderer, Camera, Transform, Plane } from 'ogl';
-
 import * as THREE from 'three';
 
 import Home from './Home';
@@ -9,39 +7,22 @@ export default class Canvas {
   constructor({ template }) {
     this.template = template;
 
-    this.createRender();
-    this.createCamera();
     this.createScene();
+    this.createCamera();
+    this.createRenderer();
     this.createGeometry();
 
     this.onResize();
   }
 
   /**
-   * OGL.
+   * THREE.
    */
-  createRender() {
-    // this.renderer = new Renderer({
-    //   alpha: true,
-    //   antialias: true,
-    // });
-    // this.gl = this.renderer.gl;
-    // document.body.appendChild(this.gl.canvas);
-
-    this.renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-    });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-    document.body.appendChild(this.renderer.domElement);
+  createScene() {
+    this.scene = new THREE.Scene();
   }
 
   createCamera() {
-    // this.camera = new Camera(this.gl);
-    // this.camera.position.z = 5;
-    // this.camera.fov = 45;
-
     this.camera = new THREE.PerspectiveCamera(
       45,
       this.width / this.height,
@@ -51,18 +32,20 @@ export default class Canvas {
     this.camera.position.z = 5;
   }
 
-  createScene() {
-    // this.scene = new Transform();
-    this.scene = new THREE.Scene();
+  createRenderer() {
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      alpha: true,
+      antialias: true,
+    });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(1);
+
+    document.body.appendChild(this.renderer.domElement);
   }
 
   createGeometry() {
-    // this.geometry = new Plane(this.gl, {
-    //   widthSegments: 10,
-    //   heightSegments: 10,
-    // });
-
-    this.geometry = new THREE.PlaneGeometry(1, 1, 10, 10);
+    this.geometry = new THREE.PlaneGeometry(1, 1, 16, 16);
   }
 
   /**
@@ -70,7 +53,6 @@ export default class Canvas {
    */
   createHome() {
     this.home = new Home({
-      gl: this.gl,
       scene: this.scene,
       viewport: this.viewport,
       screen: this.screen,
@@ -90,7 +72,6 @@ export default class Canvas {
    */
   createProject() {
     this.project = new Project({
-      gl: this.gl,
       scene: this.scene,
       viewport: this.viewport,
       screen: this.screen,
@@ -130,6 +111,10 @@ export default class Canvas {
     }
 
     if (template === 'project') {
+      if (this.project) {
+        this.destroyProject();
+      }
+
       this.createProject();
     } else if (this.project) {
       this.destroyProject();
@@ -146,10 +131,6 @@ export default class Canvas {
 
     this.camera.aspect = this.screen.width / this.screen.height;
     this.camera.updateProjectionMatrix();
-
-    // this.camera.perspective({
-    //   aspect: this.gl.canvas.width / this.gl.canvas.height,
-    // });
 
     const fov = this.camera.fov * (Math.PI / 180);
     const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
@@ -169,16 +150,15 @@ export default class Canvas {
   /**
    * Loop.
    */
-  update(scroll) {
-    // this.renderer.render({ scene: this.scene, camera: this.camera });
-    this.renderer.render(this.scene, this.camera);
-
+  update({ scroll, velocity }) {
     if (this.home && this.home.update) {
-      this.home.update(scroll);
+      this.home.update({ scroll, velocity });
     }
 
     if (this.project && this.project.update) {
-      this.project.update(scroll);
+      this.project.update({ scroll, velocity });
     }
+
+    this.renderer.render(this.scene, this.camera);
   }
 }

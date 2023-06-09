@@ -1,0 +1,17 @@
+@font-face {
+  font-family: $font-nb-akademie;
+  src: url('../fonts/nb-akademie.woff2') format('woff2'),
+    url('../fonts/nb-akademie.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-sohnebreit-halbfett;
+  src: url('../fonts/sohnebreit-halbfett.woff2') format('woff2'),
+    url('../fonts/sohnebreit-halbfett.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

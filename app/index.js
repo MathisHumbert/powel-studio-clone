@@ -3,7 +3,6 @@ import imagesLoaded from 'imagesloaded';
 
 import Home from 'pages/Home';
 import Project from 'pages/Project';
-
 import Canvas from 'components/Canvas';
 class App {
   constructor() {
@@ -21,6 +20,7 @@ class App {
 
   createPreloader() {
     // create Preloader
+
     const imgLoaded = imagesLoaded(this.content);
 
     imgLoaded.on('done', () => {
@@ -116,11 +116,11 @@ class App {
   }
 
   onResize() {
-    if (this.page) {
+    if (this.page && this.page.onResize) {
       this.page.onResize();
     }
 
-    if (this.canvas) {
+    if (this.canvas && this.canvas.onResize) {
       this.canvas.onResize();
     }
   }
@@ -153,15 +153,18 @@ class App {
    * Loop.
    */
   update() {
-    window.requestAnimationFrame(this.update.bind(this));
-
     if (this.page && this.page.update) {
       this.page.update();
     }
 
     if (this.canvas && this.canvas.update) {
-      this.canvas.update(this.page.scroll);
+      this.canvas.update({
+        scroll: this.page.scroll.current,
+        velocity: this.page.scroll.velocity,
+      });
     }
+
+    window.requestAnimationFrame(this.update.bind(this));
   }
 
   /**

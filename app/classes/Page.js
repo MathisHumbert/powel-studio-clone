@@ -18,6 +18,8 @@ export default class Page {
       current: 0,
       target: 0,
       limit: 0,
+      last: 0,
+      velocity: 0,
       ease: 0.1,
     };
     this.isDown = false;
@@ -36,6 +38,8 @@ export default class Page {
       current: 0,
       target: 0,
       limit: 0,
+      last: 0,
+      velocity: 0,
       ease: 0.05,
     };
 
@@ -160,6 +164,8 @@ export default class Page {
         this.transformPrefix
       ] = `translateY(${this.scroll.current}px)`;
     }
+
+    this.scroll.velocity = (this.scroll.current - this.scroll.last) * 0.05;
 
     this.scroll.last = this.scroll.current;
   }

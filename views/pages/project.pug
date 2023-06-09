@@ -14,7 +14,7 @@ block content
                   article.project__gallery__item
                     figure.project__gallery__media 
                       img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
-                      p.project__gallery__text=media.text
+                    p.project__gallery__text=media.text
             if index !== 0
               .project__gallery__row 
                   each media in gallery.items 
@@ -23,7 +23,7 @@ block content
                         article.project__gallery__item
                             figure.project__gallery__media 
                               img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
-                              p.project__gallery__text=media.text
+                            p.project__gallery__text=media.text
         a.project__gallery__link(href=Link(project.data.next_link))=`next project : ${project.data.next_text}`
       section.project__content
         .project__content__wrapper

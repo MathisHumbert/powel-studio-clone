@@ -9,8 +9,16 @@
 .home__header {
   min-height: 90vh;
   padding: 0 25px;
+  font-family: $font-sohnebreit-halbfett;
+
+  h1 {
+    font-size: 21.4vw;
+    line-height: 0.9;
+    display: none;
+  }
 
   svg {
+    // display: none;
     width: calc(100% + 20px);
     height: auto;
     margin-left: -20px;
@@ -73,5 +81,14 @@
 .home__project__title {
   @extend %description-12;
 
+  display: inline-block;
   margin-top: 9px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
+}
+
+.home__project__link:hover + .home__project__title {
+  opacity: 1;
+  transform: translateY(0);
 }

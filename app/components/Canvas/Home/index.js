@@ -1,16 +1,18 @@
 import { each, map } from 'lodash';
+import * as THREE from 'three';
 
 import Media from './Media';
 
 export default class Home {
-  constructor({ gl, scene, viewport, screen, geometry }) {
-    this.gl = gl;
+  constructor({ scene, viewport, screen, geometry }) {
     this.scene = scene;
     this.viewport = viewport;
     this.screen = screen;
     this.geometry = geometry;
 
     this.mediasElements = document.querySelectorAll('.home__project__media');
+
+    // create group for each and add different transform to it
 
     this.createGallery();
     this.show();
@@ -22,7 +24,6 @@ export default class Home {
       return new Media({
         element,
         index,
-        gl: this.gl,
         scene: this.scene,
         viewport: this.viewport,
         screen: this.screen,
@@ -52,10 +53,10 @@ export default class Home {
   /**
    * Loop.
    */
-  update(scroll) {
+  update({ scroll, velocity }) {
     each(this.medias, (media) => {
       if (media && media.update) {
-        media.update(scroll);
+        media.update({ scroll, velocity });
       }
     });
   }
@@ -64,6 +65,20 @@ export default class Home {
    * Destroy.
    */
   destroy() {
-    this.scene.removeChild(this.group);
+    this.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose();
+
+        for (const key in child.material) {
+          const value = child.material[key];
+
+          if (value && typeof value.dispose === 'function') {
+            value.dispose();
+          }
+        }
+      }
+    });
+
+    this.scene.children = [];
   }
 }
