@@ -1,9 +1,7 @@
 import * as THREE from 'three';
 import { each, map } from 'lodash';
 
-import Media from 'components/Canvas/Media';
-import vertex from 'shaders/plane-vertex.glsl';
-import fragment from 'shaders/plane-fragment.glsl';
+import Media from './Media';
 
 export default class Project {
   constructor({ scene, viewport, screen, geometry }) {
@@ -28,8 +26,6 @@ export default class Project {
         viewport: this.viewport,
         screen: this.screen,
         geometry: this.geometry,
-        vertex,
-        fragment,
       });
     });
   }
@@ -37,9 +33,21 @@ export default class Project {
   /**
    * Animations.
    */
-  show() {}
+  show() {
+    each(this.medias, (media) => {
+      if (media && media.show) {
+        media.show();
+      }
+    });
+  }
 
-  hide() {}
+  hide() {
+    each(this.medias, (media) => {
+      if (media && media.hide) {
+        media.hide();
+      }
+    });
+  }
 
   /**
    * Events.
@@ -55,10 +63,10 @@ export default class Project {
   /**
    * Loop.
    */
-  update(scroll) {
+  update({ scroll, velocity }) {
     each(this.medias, (media) => {
       if (media && media.update) {
-        media.update(scroll);
+        media.update({ scroll, velocity });
       }
     });
   }
@@ -67,7 +75,6 @@ export default class Project {
    * Destroy.
    */
   destroy() {
-    console.log('destroy');
     this.scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.geometry.dispose();

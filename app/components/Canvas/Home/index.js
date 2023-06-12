@@ -2,7 +2,7 @@ import { each, map } from 'lodash';
 import * as THREE from 'three';
 
 import Media from './Media';
-
+import Logo from './Logo';
 export default class Home {
   constructor({ scene, viewport, screen, geometry }) {
     this.scene = scene;
@@ -11,10 +11,12 @@ export default class Home {
     this.geometry = geometry;
 
     this.mediasElements = document.querySelectorAll('.home__project__media');
+    this.logoElement = document.querySelector('.home__header svg');
 
     // create group for each and add different transform to it
 
-    this.createGallery();
+    // this.createGallery();
+    this.createLogo();
     this.show();
     this.onResize({ viewport, screen });
   }
@@ -32,12 +34,34 @@ export default class Home {
     });
   }
 
+  createLogo() {
+    this.logo = new Logo({
+      element: this.logoElement,
+      scene: this.scene,
+      viewport: this.viewport,
+      screen: this.screen,
+      geometry: this.geometry,
+    });
+  }
+
   /**
    * Animations.
    */
-  show() {}
+  show() {
+    each(this.medias, (media) => {
+      if (media && media.show) {
+        media.show();
+      }
+    });
+  }
 
-  hide() {}
+  hide() {
+    each(this.medias, (media) => {
+      if (media && media.hide) {
+        media.hide();
+      }
+    });
+  }
 
   /**
    * Events.
@@ -48,6 +72,10 @@ export default class Home {
         media.onResize({ viewport, screen });
       }
     });
+
+    if (this.logo && this.logo.onResize) {
+      this.logo.onResize({ viewport, screen });
+    }
   }
 
   /**

@@ -20,6 +20,7 @@ class App {
 
   createPreloader() {
     // create Preloader
+    // load textures
 
     const imgLoaded = imagesLoaded(this.content);
 
@@ -29,6 +30,8 @@ class App {
   }
 
   createLoader() {
+    // load textures
+
     const imgLoaded = imagesLoaded(this.content);
 
     imgLoaded.on('done', () => {

@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 
-import vertex from 'shaders/plane-vertex.glsl';
-import fragment from 'shaders/plane-fragment.glsl';
+import vertex from 'shaders/gallery-vertex.glsl';
+import fragment from 'shaders/gallery-fragment.glsl';
 
 export default class Media {
   constructor({ element, index, scene, viewport, screen, geometry }) {
@@ -16,30 +16,30 @@ export default class Media {
     this.scroll = 0;
 
     this.createTexture();
-    this.createProgram();
+    this.createMaterial();
     this.createMesh();
     this.onMouseEnter();
     this.onMouseLeave();
   }
 
+  /**
+   * Create.
+   */
   createTexture() {
     this.imageElement = this.element.querySelector('img');
 
     const textureLoader = new THREE.TextureLoader();
-    this.texture = textureLoader.load(
-      this.imageElement.getAttribute('src'),
-      (texture) => {
-        this.material.uniforms.uTexture.value = texture;
-      }
-    );
+    textureLoader.load(this.imageElement.getAttribute('src'), (texture) => {
+      this.material.uniforms.uTexture.value = texture;
+    });
   }
 
-  createProgram() {
+  createMaterial() {
     this.material = new THREE.RawShaderMaterial({
       fragmentShader: fragment,
       vertexShader: vertex,
       uniforms: {
-        uTexture: { value: this.texture },
+        uTexture: { value: null },
         uImageSizes: {
           value: new THREE.Vector2(
             this.imageElement.naturalWidth,
@@ -49,6 +49,7 @@ export default class Media {
         uPlaneSizes: { value: new THREE.Vector2(0, 0) },
         uVelocity: { value: 0 },
         uHover: { value: 0 },
+        uAlpha: { value: 0 },
       },
     });
   }
@@ -101,6 +102,17 @@ export default class Media {
       this.viewport.height / 2 -
       this.mesh.scale.y / 2 -
       ((this.bounds.top - y) / this.screen.height) * this.viewport.height;
+  }
+
+  /**
+   * Animations.
+   */
+  show() {
+    gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
+  }
+
+  hide() {
+    gsap.to(this.material.uniforms.uAlpha, { value: 0 });
   }
 
   /**

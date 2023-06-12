@@ -18,7 +18,7 @@
   }
 
   svg {
-    // display: none;
+    visibility: hidden;
     width: calc(100% + 20px);
     height: auto;
     margin-left: -20px;

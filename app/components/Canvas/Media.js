@@ -1,3 +1,4 @@
+import { gsap } from 'gsap';
 import * as THREE from 'three';
 
 export default class Media {
@@ -27,6 +28,9 @@ export default class Media {
     this.createMesh();
   }
 
+  /**
+   * Create.
+   */
   createTexture() {
     this.imageElement = this.element.querySelector('img');
 
@@ -43,7 +47,6 @@ export default class Media {
     this.material = new THREE.RawShaderMaterial({
       fragmentShader: this.fragment,
       vertexShader: this.vertex,
-      // wireframe: true,
       uniforms: {
         uTexture: { value: this.texture },
         uImageSizes: {
@@ -53,6 +56,7 @@ export default class Media {
           ),
         },
         uPlaneSizes: { value: new THREE.Vector2(0, 0) },
+        uAlpha: { value: 0 },
       },
     });
   }
@@ -108,6 +112,17 @@ export default class Media {
   }
 
   /**
+   * Animations.
+   */
+  show() {
+    gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
+  }
+
+  hide() {
+    gsap.to(this.material.uniforms.uAlpha, { value: 0 });
+  }
+
+  /**
    * Events.
    */
   onResize({ viewport, screen }) {
@@ -117,19 +132,12 @@ export default class Media {
     this.createBounds();
   }
 
-  onScroll({ scroll }) {
-    this.scroll = scroll;
-
-    this.updateY(scroll);
-  }
-
   /**
    * Loop.
    */
-  update(scroll) {
-    // velocity of scroll and add it to uniforms
-    this.scroll = scroll.current;
+  update({ scroll }) {
+    this.scroll = scroll;
 
-    this.updateY(scroll.current);
+    this.updateY(scroll);
   }
 }
