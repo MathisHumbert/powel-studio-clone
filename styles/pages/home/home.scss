@@ -4,6 +4,8 @@
 
 .home__wrapper {
   @extend %page__wrapper;
+
+  padding-bottom: 50vmin;
 }
 
 .home__header {

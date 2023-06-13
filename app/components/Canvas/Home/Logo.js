@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+import { gsap } from 'gsap';
 
 import vertex from 'shaders/logo-vertex.glsl';
 import fragment from 'shaders/logo-fragment.glsl';
@@ -13,40 +13,25 @@ export default class Logo {
     this.geometry = geometry;
 
     this.scroll = 0;
+    this.mouse = new THREE.Vector2(0, 0);
+
+    this.homeHeaderElement = document.querySelector('.home__header');
 
     this.createTexture();
     this.createMaterial();
     this.createMesh();
+
+    this.onMouseMove();
+    this.onMouseEnter();
+    this.onMouseLeave();
   }
 
   /**
    * Create.
    */
   createTexture() {
-    // const loader = new SVGLoader();
-    // loader.load('tiger.svg', (data) => {
-    //   const paths = data.paths;
-    //   const group = new THREE.Group();
-    //   for (let i = 0; i < paths.length; i++) {
-    //     const path = paths[i];
-    //     const material = new THREE.MeshBasicMaterial({
-    //       color: path.color,
-    //       side: THREE.DoubleSide,
-    //       depthWrite: false,
-    //     });
-    //     const shapes = SVGLoader.createShapes(path);
-    //     for (let j = 0; j < shapes.length; j++) {
-    //       const shape = shapes[j];
-    //       const geometry = new THREE.ShapeGeometry(shape);
-    //       const mesh = new THREE.Mesh(geometry, material);
-    //       group.add(mesh);
-    //     }
-    //   }
-    //   this.scene.add(group);
-    //   console.log(this.scene);
-    // });
-
     const textureLoader = new THREE.TextureLoader();
+
     textureLoader.load('powell-studio.png', (texture) => {
       this.material.uniforms.uTexture.value = texture;
     });
@@ -56,16 +41,14 @@ export default class Logo {
     this.material = new THREE.RawShaderMaterial({
       fragmentShader: fragment,
       vertexShader: vertex,
-      // wireframe: true,
       uniforms: {
         uTexture: { value: null },
-        uImageSizes: {
-          value: new THREE.Vector2(0, 0),
+        uMouse: { value: this.mouse },
+        uAlpha: { value: 0 },
+        uRes: {
+          value: new THREE.Vector2(this.screen.width, this.screen.height),
         },
-        uPlaneSizes: { value: new THREE.Vector2(0, 0) },
-        uVelocity: { value: 0 },
         uHover: { value: 0 },
-        uAlpha: { value: 1 },
       },
     });
   }
@@ -74,6 +57,7 @@ export default class Logo {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
     this.scene.add(this.mesh);
+    this.mesh.position.z += this.mesh.position.z - 0.01;
   }
 
   createBounds() {
@@ -89,11 +73,6 @@ export default class Logo {
     this.updateScale();
     this.updateX();
     this.updateY(this.scroll);
-
-    this.material.uniforms.uPlaneSizes.value = new THREE.Vector2(
-      this.mesh.scale.x,
-      this.mesh.scale.y
-    );
   }
 
   /**
@@ -124,11 +103,11 @@ export default class Logo {
    * Animations.
    */
   show() {
-    // gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
+    gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
   }
 
   hide() {
-    // gsap.to(this.material.uniforms.uAlpha, { value: 0 });
+    gsap.to(this.material.uniforms.uAlpha, { value: 0 });
   }
 
   /**
@@ -139,5 +118,40 @@ export default class Logo {
     this.screen = screen;
 
     this.createBounds();
+
+    this.material.uniforms.uRes.value = new THREE.Vector2(
+      this.screen.width,
+      this.screen.height
+    );
+  }
+
+  onMouseMove() {
+    this.homeHeaderElement.addEventListener('mousemove', (event) => {
+      gsap.to(this.mouse, {
+        x: (event.clientX / this.screen.width) * 2 - 1,
+        y: -(event.clientY / this.screen.height) * 2 + 1,
+      });
+    });
+  }
+
+  onMouseEnter() {
+    this.homeHeaderElement.addEventListener('mouseenter', () => {
+      gsap.to(this.material.uniforms.uHover, { value: 1 });
+    });
+  }
+
+  onMouseLeave() {
+    this.homeHeaderElement.addEventListener('mouseleave', () => {
+      gsap.to(this.material.uniforms.uHover, { value: 0 });
+    });
+  }
+
+  /**
+   * Loop.
+   */
+  update({ scroll }) {
+    this.scroll = scroll;
+
+    this.updateY(scroll);
   }
 }

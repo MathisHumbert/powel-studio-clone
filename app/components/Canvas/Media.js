@@ -24,7 +24,7 @@ export default class Media {
     this.scroll = 0;
 
     this.createTexture();
-    this.createProgram();
+    this.createMaterial();
     this.createMesh();
   }
 
@@ -43,7 +43,7 @@ export default class Media {
     );
   }
 
-  createProgram() {
+  createMaterial() {
     this.material = new THREE.RawShaderMaterial({
       fragmentShader: this.fragment,
       vertexShader: this.vertex,

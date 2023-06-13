@@ -1,4 +1,4 @@
-import { each, map } from 'lodash';
+import { each } from 'lodash';
 import * as THREE from 'three';
 
 import Media from './Media';
@@ -10,27 +10,43 @@ export default class Home {
     this.screen = screen;
     this.geometry = geometry;
 
-    this.mediasElements = document.querySelectorAll('.home__project__media');
+    this.mediaListElements = document.querySelectorAll('.home__project__list');
     this.logoElement = document.querySelector('.home__header svg');
 
-    // create group for each and add different transform to it
-
-    // this.createGallery();
+    this.createGallery();
     this.createLogo();
     this.show();
     this.onResize({ viewport, screen });
   }
 
   createGallery() {
-    this.medias = map(this.mediasElements, (element, index) => {
-      return new Media({
-        element,
-        index,
-        scene: this.scene,
-        viewport: this.viewport,
-        screen: this.screen,
-        geometry: this.geometry,
+    this.medias = [];
+
+    this.groups = [];
+
+    each(this.mediaListElements, (list) => {
+      const group = new THREE.Group();
+
+      this.groups.push(group);
+
+      const mediaElements = list.querySelectorAll('.home__project__media');
+
+      each(mediaElements, (element, index) => {
+        const media = new Media({
+          element,
+          index,
+          scene: group,
+          viewport: this.viewport,
+          screen: this.screen,
+          geometry: this.geometry,
+        });
+
+        this.medias.push(media);
       });
+
+      this.scene.add(group);
+
+      console.log(group);
     });
   }
 
@@ -53,6 +69,10 @@ export default class Home {
         media.show();
       }
     });
+
+    if (this.logo && this.logo.show) {
+      this.logo.show();
+    }
   }
 
   hide() {
@@ -61,6 +81,10 @@ export default class Home {
         media.hide();
       }
     });
+
+    if (this.logo && this.logo.hide) {
+      this.logo.hide();
+    }
   }
 
   /**
@@ -85,6 +109,23 @@ export default class Home {
     each(this.medias, (media) => {
       if (media && media.update) {
         media.update({ scroll, velocity });
+      }
+    });
+
+    if (this.logo && this.logo.update) {
+      this.logo.update({ scroll, velocity });
+    }
+
+    each(this.groups, (group, index) => {
+      const updatedScroll =
+        (scroll / this.screen.height) * this.viewport.height;
+
+      if (index === 0) {
+        group.position.y = -updatedScroll * 0.075;
+      } else if (index === 1) {
+        group.position.y = -updatedScroll * 0.15;
+      } else {
+        group.position.y = -updatedScroll * 0.075;
       }
     });
   }
