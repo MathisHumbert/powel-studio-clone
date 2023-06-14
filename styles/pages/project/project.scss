@@ -73,7 +73,7 @@
   position: relative;
 
   &::before {
-    @extend %round-dot;
+    @extend %round-dot-blink;
   }
 }
 

@@ -8,6 +8,36 @@
   height: 6px;
   border-radius: 50%;
   background: $main-text-color;
+  opacity: 1;
+}
+
+%round-number {
+  content: counter(custom-counter);
+  position: absolute;
+  top: 50%;
+  left: -1em;
+  transform: translate(-37.5%, -50%);
+  display: block;
+  font-size: 7px;
+  width: 1em;
+  height: 1em;
+}
+
+%round-circle {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: -1em;
+  transform: translateY(-50%);
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 100%;
+  border: 1px solid $main-text-color;
+}
+
+%round-dot-blink {
+  @extend %round-dot;
+
   opacity: 0;
 
   &:hover {

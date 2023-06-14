@@ -69,8 +69,6 @@ app.get('/', async (req, res) => {
   const home = await api.getByUID('gallery', 'home');
   const defaults = await handleRequest(api);
 
-  console.log(home);
-
   res.render('pages/home', { ...defaults, home });
 });
 

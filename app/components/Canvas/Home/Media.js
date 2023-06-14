@@ -13,8 +13,6 @@ export default class Media {
     this.screen = screen;
     this.geometry = geometry;
 
-    this.scroll = 0;
-
     this.createTexture();
     this.createMaterial();
     this.createMesh();
@@ -28,10 +26,9 @@ export default class Media {
   createTexture() {
     this.imageElement = this.element.querySelector('img');
 
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load(this.imageElement.getAttribute('src'), (texture) => {
-      this.material.uniforms.uTexture.value = texture;
-    });
+    const src = this.imageElement.getAttribute('src');
+
+    this.texture = window.TEXTURES[src];
   }
 
   createMaterial() {
@@ -39,7 +36,7 @@ export default class Media {
       fragmentShader: fragment,
       vertexShader: vertex,
       uniforms: {
-        uTexture: { value: null },
+        uTexture: { value: this.texture },
         uImageSizes: {
           value: new THREE.Vector2(
             this.imageElement.naturalWidth,
@@ -61,18 +58,11 @@ export default class Media {
   }
 
   createBounds() {
-    const rect = this.element.getBoundingClientRect();
-
-    this.bounds = {
-      left: rect.left,
-      top: rect.top + this.scroll,
-      width: rect.width,
-      height: rect.height,
-    };
+    this.bounds = this.element.getBoundingClientRect();
 
     this.updateScale();
     this.updateX();
-    this.updateY(this.scroll);
+    this.updateY(0);
 
     this.material.uniforms.uPlaneSizes.value = new THREE.Vector2(
       this.mesh.scale.x,
@@ -133,7 +123,6 @@ export default class Media {
 
   onMouseLeave() {
     this.element.addEventListener('mouseleave', () => {
-      console.log;
       gsap.to(this.material.uniforms.uHover, { value: 0 });
     });
   }
@@ -142,8 +131,6 @@ export default class Media {
    * Loop.
    */
   update({ scroll, velocity }) {
-    this.scroll = scroll;
-
     this.material.uniforms.uVelocity.value = velocity;
 
     this.updateY(scroll);

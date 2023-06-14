@@ -1,0 +1,7 @@
+footer.footer
+  .footer__wrapper
+    ul.footer__list
+      each item in footer.data.list
+        li.footer__list__item
+          a(href=item.first_link.url rel="noopener" tagert='_blank')=item.first_text
+          a(href=item.second_link.url rel="noopener" tagert='_blank')=item.second_text

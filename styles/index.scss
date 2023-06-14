@@ -12,5 +12,8 @@
 @import './base/base';
 @import './base/fonts';
 
+@import './layout/navigation';
+@import './layout/footer';
+
 @import './pages/home/home';
 @import './pages/project/project';

@@ -1,0 +1,41 @@
+.footer {
+  margin-top: 250px;
+}
+
+.footer__wrapper {
+  padding: 0 25px;
+}
+
+.footer__list {
+  display: flex;
+}
+
+.footer__list__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.footer__list__item a {
+  @extend %description-12;
+
+  position: relative;
+  counter-increment: custom-counter;
+  width: fit-content;
+
+  &::before {
+    @extend %round-number;
+  }
+
+  &::after {
+    @extend %round-circle;
+  }
+  position: relative;
+
+  &:hover {
+    &::before,
+    &::after {
+      opacity: 0;
+    }
+  }
+}

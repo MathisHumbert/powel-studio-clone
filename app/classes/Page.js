@@ -95,6 +95,16 @@ export default class Page {
    * Events.
    */
   onResize() {
+    this.scroll = {
+      position: 0,
+      current: 0,
+      target: 0,
+      limit: 0,
+      last: 0,
+      velocity: 0,
+      ease: 0.05,
+    };
+
     if (this.elements.wrapper) {
       this.scroll.limit =
         this.elements.wrapper.clientHeight - window.innerHeight;

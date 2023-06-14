@@ -14,7 +14,7 @@ export default class Home {
     this.logoElement = document.querySelector('.home__header svg');
 
     this.createGallery();
-    this.createLogo();
+    // this.createLogo();
     this.show();
     this.onResize({ viewport, screen });
   }
@@ -45,8 +45,6 @@ export default class Home {
       });
 
       this.scene.add(group);
-
-      console.log(group);
     });
   }
 
@@ -70,9 +68,9 @@ export default class Home {
       }
     });
 
-    if (this.logo && this.logo.show) {
-      this.logo.show();
-    }
+    // if (this.logo && this.logo.show) {
+    //   this.logo.show();
+    // }
   }
 
   hide() {
@@ -82,15 +80,18 @@ export default class Home {
       }
     });
 
-    if (this.logo && this.logo.hide) {
-      this.logo.hide();
-    }
+    // if (this.logo && this.logo.hide) {
+    //   this.logo.hide();
+    // }
   }
 
   /**
    * Events.
    */
   onResize({ viewport, screen }) {
+    this.viewport = viewport;
+    this.screen = screen;
+
     each(this.medias, (media) => {
       if (media && media.onResize) {
         media.onResize({ viewport, screen });

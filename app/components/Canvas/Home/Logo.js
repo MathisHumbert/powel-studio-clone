@@ -12,7 +12,6 @@ export default class Logo {
     this.screen = screen;
     this.geometry = geometry;
 
-    this.scroll = 0;
     this.mouse = new THREE.Vector2(0, 0);
 
     this.homeHeaderElement = document.querySelector('.home__header');
@@ -24,6 +23,8 @@ export default class Logo {
     this.onMouseMove();
     this.onMouseEnter();
     this.onMouseLeave();
+
+    console.log('create Logo');
   }
 
   /**
@@ -44,7 +45,7 @@ export default class Logo {
       uniforms: {
         uTexture: { value: null },
         uMouse: { value: this.mouse },
-        uAlpha: { value: 0 },
+        uAlpha: { value: 1 },
         uRes: {
           value: new THREE.Vector2(this.screen.width, this.screen.height),
         },
@@ -61,18 +62,11 @@ export default class Logo {
   }
 
   createBounds() {
-    const rect = this.element.getBoundingClientRect();
-
-    this.bounds = {
-      left: rect.left,
-      top: rect.top + this.scroll,
-      width: rect.width,
-      height: rect.height,
-    };
+    this.bounds = this.element.getBoundingClientRect();
 
     this.updateScale();
     this.updateX();
-    this.updateY(this.scroll);
+    this.updateY(0);
   }
 
   /**
@@ -150,8 +144,6 @@ export default class Logo {
    * Loop.
    */
   update({ scroll }) {
-    this.scroll = scroll;
-
     this.updateY(scroll);
   }
 }

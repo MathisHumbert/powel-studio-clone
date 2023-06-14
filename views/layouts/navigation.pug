@@ -1,17 +1,14 @@
 nav.navigation
-  .navigation__wrapper 
-    a.navigation__link(href="/")="Powel-Studio"
+  .navigation__wrapper
     ul.navigation__list
-      li.navigation__list__item
-        a(href="/")="index"
-        a(href="/m13")="M13"
-          sup="tm"
-      li.navigation__list__item
-        a(href="/studio")="studio"
-        a(href="https://creativemarket.com/tenburytype" rel="noopener" tagert='_blank')="SHOP [TT]" 
-      li.navigation__list__item
-        a(href="mailto:hello@powell-studio.com" rel="noopener" tagert='_blank')="hello[at]powell-studio.com"
-        a(href="tel:00018583619534" rel="noopener" tagert='_blank')="+1 858 361 9534" 
-      li.navigation__list__item
-        a(href="https://www.instagram.com/powell_studio/" rel="noopener" tagert='_blank')="Instagram"
-        a(href="https://twitter.com/brijanp" rel="noopener" tagert='_blank')="Twitter" 
+      each item in navigation.data.list
+        li.navigation__list__item
+          if item.first_link.link_type === 'Web'
+            a(href=item.first_link.url rel="noopener" tagert='_blank')=item.first_text
+          else 
+            a(href=Link(item.first_link))=item.first_text
+          if item.second_link.link_type !== 'Any'
+            if item.second_link.link_type === 'Web'
+              a(href=item.second_link.url rel="noopener" tagert='_blank')=item.second_text
+            else 
+              a(href=Link(item.second_link))=item.second_text

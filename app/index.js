@@ -1,5 +1,6 @@
-import each from 'lodash/each';
+import { each, map } from 'lodash';
 import imagesLoaded from 'imagesloaded';
+import * as THREE from 'three';
 
 import Home from 'pages/Home';
 import Project from 'pages/Project';
@@ -20,23 +21,60 @@ class App {
 
   createPreloader() {
     // create Preloader
-    // load textures
+    this.loadedTextureUrl = [window.location.pathname];
+    this.textureLoader = new THREE.TextureLoader();
 
-    const imgLoaded = imagesLoaded(this.content);
+    window.TEXTURES = {};
 
-    imgLoaded.on('done', () => {
+    const images = this.content.querySelectorAll('img');
+
+    Promise.all(
+      map(images, (image) => {
+        return new Promise((res) => {
+          const src = image.getAttribute('src');
+          this.textureLoader.load(src, (texture) => {
+            window.TEXTURES[src] = texture;
+
+            res();
+          });
+        });
+      })
+    ).then(() => {
+      console.log('loaded');
       this.onPreloaded();
     });
   }
 
   createLoader() {
-    // load textures
+    if (!this.loadedTextureUrl.includes(window.location.pathname)) {
+      this.loadedTextureUrl.push(window.location.pathname);
 
-    const imgLoaded = imagesLoaded(this.content);
+      const images = this.content.querySelectorAll('img');
 
-    imgLoaded.on('done', () => {
-      this.onLoaded();
-    });
+      Promise.all(
+        map(images, (image) => {
+          return new Promise((res) => {
+            const src = image.getAttribute('src');
+            this.textureLoader.load(src, (texture) => {
+              window.TEXTURES[src] = texture;
+
+              res();
+            });
+          });
+        })
+      ).then(() => {
+        this.onLoaded();
+      });
+    } else {
+      // load textures
+      const imgLoaded = imagesLoaded(this.content);
+
+      imgLoaded.on('done', () => {
+        console.log('loaded');
+
+        this.onLoaded();
+      });
+    }
   }
 
   createCanvas() {
@@ -72,6 +110,8 @@ class App {
   onLoaded() {
     this.onResize();
 
+    this.canvas.onLoaded(this.template);
+
     this.page.show();
   }
 
@@ -104,8 +144,6 @@ class App {
 
       this.content.innerHTML = divContent.innerHTML;
       this.content.setAttribute('data-template', this.template);
-
-      this.canvas.onChangeEnd(this.template);
 
       this.page = this.pages[this.template];
 

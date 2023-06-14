@@ -93,6 +93,10 @@ export default class Canvas {
     this.onChangeEnd(this.template);
   }
 
+  onLoaded(template) {
+    this.onChangeEnd(template);
+  }
+
   onChangeStart() {
     if (this.home) {
       this.home.hide();
@@ -105,6 +109,10 @@ export default class Canvas {
 
   onChangeEnd(template) {
     if (template === 'home') {
+      if (this.home) {
+        this.destroyHome();
+      }
+
       this.createHome();
     } else if (this.home) {
       this.destroyHome();

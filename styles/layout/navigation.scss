@@ -1,0 +1,88 @@
+.navigation {
+  @extend %cover;
+
+  position: fixed;
+  padding-top: 20px;
+  color: $main-text-color;
+  pointer-events: none;
+  z-index: z('navigation');
+}
+
+.navigation__wrapper {
+  padding: 0 25px;
+}
+
+.navigation__list {
+  display: flex;
+}
+
+.navigation__list__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 25px;
+
+  &:nth-child(1) {
+    flex: 0 0 37.5%;
+    padding-left: 0;
+  }
+
+  &:nth-child(2) {
+    flex: 0 0 12.5%;
+  }
+
+  &:nth-child(3) {
+    flex: 0 0 12.5%;
+  }
+
+  &:nth-child(4) {
+    flex: 0 0 25%;
+  }
+
+  &:nth-child(5) {
+    flex: 0 0 12.5%;
+    padding-right: 0;
+  }
+}
+
+.navigation__list__item a {
+  @extend %description-12;
+
+  pointer-events: all;
+  position: relative;
+  width: fit-content;
+}
+
+.navigation__list__item:nth-child(-n + 3) a::before {
+  @extend %round-dot-blink;
+}
+
+.navigation__list__item:nth-child(n + 4) a {
+  counter-increment: custom-counter;
+
+  &::before {
+    @extend %round-number;
+  }
+
+  &::after {
+    @extend %round-circle;
+  }
+
+  &:hover {
+    &::before {
+      opacity: 0;
+    }
+
+    &::after {
+      @extend %round-dot-blink;
+    }
+  }
+}
+
+.navigation__list a.active {
+  @extend %round-dot;
+
+  &:hover {
+    opacity: 1;
+  }
+}
