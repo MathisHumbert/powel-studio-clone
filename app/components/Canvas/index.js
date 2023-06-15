@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
-import Home from './Home';
-import Project from './Project';
+import Home from './Home/index';
+import Project from './Project/index';
+import M13 from './M13/index';
 
 export default class Canvas {
   constructor({ template }) {
@@ -87,6 +88,25 @@ export default class Canvas {
   }
 
   /**
+   * M13.
+   */
+  createM13() {
+    this.m13 = new M13({
+      scene: this.scene,
+      viewport: this.viewport,
+      screen: this.screen,
+      geometry: this.geometry,
+    });
+  }
+
+  destroyM13() {
+    if (!this.m13) return;
+
+    this.m13.destroy();
+    this.m13 = null;
+  }
+
+  /**
    * Events.
    */
   onPreloaded() {
@@ -102,31 +122,43 @@ export default class Canvas {
       this.home.hide();
     }
 
+    if (this.m13) {
+      this.m13.hide();
+    }
+
     if (this.project) {
       this.project.hide();
     }
   }
 
   onChangeEnd(template) {
-    if (template === 'home') {
-      if (this.home) {
-        this.destroyHome();
-      }
+    if (this.project) {
+      this.destroyProject();
+    }
 
-      this.createHome();
-    } else if (this.home) {
+    if (this.home) {
       this.destroyHome();
     }
 
-    if (template === 'project') {
-      if (this.project) {
-        this.destroyProject();
-      }
-
-      this.createProject();
-    } else if (this.project) {
-      this.destroyProject();
+    if (this.m13) {
+      this.destroyM13();
     }
+
+    if (template === 'project') {
+      this.createProject();
+    }
+
+    if (template === 'm13') {
+      this.createM13();
+    }
+
+    if (template === 'home') {
+      this.createHome();
+    }
+
+    this.template = template;
+
+    this.onResize();
   }
 
   onResize() {
@@ -153,6 +185,13 @@ export default class Canvas {
     if (this.project && this.project.onResize) {
       this.project.onResize({ viewport: this.viewport, screen: this.screen });
     }
+
+    if (this.m13 && this.m13.onResize) {
+      this.m13.onResize({
+        viewport: this.viewport,
+        screen: this.screen,
+      });
+    }
   }
 
   /**
@@ -165,6 +204,10 @@ export default class Canvas {
 
     if (this.project && this.project.update) {
       this.project.update({ scroll, velocity });
+    }
+
+    if (this.m13 && this.m13.update) {
+      this.m13.update({ scroll, velocity });
     }
 
     this.renderer.render(this.scene, this.camera);

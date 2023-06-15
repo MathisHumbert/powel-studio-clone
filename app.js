@@ -34,6 +34,14 @@ const HandleLinkResolver = (doc) => {
     return `/project/${doc.uid}`;
   }
 
+  if (doc.type === 'gallery' && doc.uid === 'm13') {
+    return '/m13';
+  }
+
+  if (doc.type === 'studio') {
+    return '/studio';
+  }
+
   return '/';
 };
 
@@ -70,6 +78,15 @@ app.get('/', async (req, res) => {
   const defaults = await handleRequest(api);
 
   res.render('pages/home', { ...defaults, home });
+});
+
+app.get('/m13', async (req, res) => {
+  const api = initApi(req);
+
+  const m13 = await api.getByUID('gallery', 'm13');
+  const defaults = await handleRequest(api);
+
+  res.render('pages/m13', { ...defaults, m13 });
 });
 
 app.get('/project/:id', async (req, res) => {

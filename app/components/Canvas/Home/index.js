@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import Media from './Media';
 import Logo from './Logo';
+
 export default class Home {
   constructor({ scene, viewport, screen, geometry }) {
     this.scene = scene;
@@ -14,11 +15,14 @@ export default class Home {
     this.logoElement = document.querySelector('.home__header svg');
 
     this.createGallery();
-    // this.createLogo();
+    this.createLogo();
     this.show();
     this.onResize({ viewport, screen });
   }
 
+  /**
+   * Create.
+   */
   createGallery() {
     this.medias = [];
 
@@ -68,9 +72,9 @@ export default class Home {
       }
     });
 
-    // if (this.logo && this.logo.show) {
-    //   this.logo.show();
-    // }
+    if (this.logo && this.logo.show) {
+      this.logo.show();
+    }
   }
 
   hide() {
@@ -80,9 +84,9 @@ export default class Home {
       }
     });
 
-    // if (this.logo && this.logo.hide) {
-    //   this.logo.hide();
-    // }
+    if (this.logo && this.logo.hide) {
+      this.logo.hide();
+    }
   }
 
   /**

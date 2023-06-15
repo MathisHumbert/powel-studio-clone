@@ -9,6 +9,6 @@ nav.navigation
             a(href=Link(item.first_link))=item.first_text
           if item.second_link.link_type !== 'Any'
             if item.second_link.link_type === 'Web'
-              a(href=item.second_link.url rel="noopener" tagert='_blank')=item.second_text
+              a(href=item.second_link rel="noopener" tagert='_blank')=item.second_text
             else 
               a(href=Link(item.second_link))=item.second_text

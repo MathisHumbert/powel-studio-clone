@@ -4,14 +4,16 @@ import * as THREE from 'three';
 
 import Home from 'pages/Home';
 import Project from 'pages/Project';
+import M13 from 'pages/M13';
 import Canvas from 'components/Canvas';
+
 class App {
   constructor() {
     this.createContent();
 
+    this.createCanvas();
     this.createPages();
     this.createPreloader();
-    this.createCanvas();
 
     this.addEventsListeners();
     this.addLinkListeners();
@@ -20,13 +22,16 @@ class App {
   }
 
   createPreloader() {
-    // create Preloader
+    // TOFO: create Preloader Component
+
     this.loadedTextureUrl = [window.location.pathname];
     this.textureLoader = new THREE.TextureLoader();
 
     window.TEXTURES = {};
 
     const images = this.content.querySelectorAll('img');
+
+    // TODO: create a function to load textures and images
 
     Promise.all(
       map(images, (image) => {
@@ -40,7 +45,6 @@ class App {
         });
       })
     ).then(() => {
-      console.log('loaded');
       this.onPreloaded();
     });
   }
@@ -66,12 +70,9 @@ class App {
         this.onLoaded();
       });
     } else {
-      // load textures
       const imgLoaded = imagesLoaded(this.content);
 
       imgLoaded.on('done', () => {
-        console.log('loaded');
-
         this.onLoaded();
       });
     }
@@ -90,6 +91,7 @@ class App {
     this.pages = {
       home: new Home(),
       project: new Project(),
+      m13: new M13(),
     };
 
     this.page = this.pages[this.template];
@@ -146,8 +148,8 @@ class App {
       this.content.setAttribute('data-template', this.template);
 
       this.page = this.pages[this.template];
+      this.page.create();
 
-      this.page.create(false);
       this.createLoader();
 
       this.addLinkListeners();

@@ -45,6 +45,10 @@ void main() {
 
   vec4 blurredTexture = blur(uTexture, vUv, 0.015);
 
-  gl_FragColor = mix(texture, blurredTexture, c * uAlpha * uHover);
+  vec4 finalTexture = mix(texture, blurredTexture, c * uHover);
+
+  finalTexture.a *= uAlpha;
+
+  gl_FragColor = finalTexture;
 }
 

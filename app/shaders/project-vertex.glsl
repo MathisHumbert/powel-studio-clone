@@ -3,7 +3,6 @@ attribute vec2 uv;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
-uniform float uTime;
 uniform float uVelocity;
 
 varying vec2 vUv;

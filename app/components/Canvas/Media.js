@@ -1,27 +1,17 @@
 import { gsap } from 'gsap';
 import * as THREE from 'three';
 
+import fragment from 'shaders/fragment.glsl';
+import vertex from 'shaders/vertex.glsl';
+
 export default class Media {
-  constructor({
-    element,
-    index,
-    scene,
-    viewport,
-    screen,
-    geometry,
-    vertex,
-    fragment,
-  }) {
+  constructor({ element, index, scene, viewport, screen, geometry }) {
     this.element = element;
     this.index = index;
     this.scene = scene;
     this.viewport = viewport;
     this.screen = screen;
     this.geometry = geometry;
-    this.vertex = vertex;
-    this.fragment = fragment;
-
-    this.scroll = 0;
 
     this.createTexture();
     this.createMaterial();
@@ -34,19 +24,15 @@ export default class Media {
   createTexture() {
     this.imageElement = this.element.querySelector('img');
 
-    const textureLoader = new THREE.TextureLoader();
-    this.texture = textureLoader.load(
-      this.imageElement.getAttribute('src'),
-      (texture) => {
-        this.material.uniforms.uTexture.value = texture;
-      }
-    );
+    const src = this.imageElement.getAttribute('src');
+
+    this.texture = window.TEXTURES[src];
   }
 
   createMaterial() {
     this.material = new THREE.RawShaderMaterial({
-      fragmentShader: this.fragment,
-      vertexShader: this.vertex,
+      fragmentShader: fragment,
+      vertexShader: vertex,
       uniforms: {
         uTexture: { value: this.texture },
         uImageSizes: {
@@ -56,7 +42,7 @@ export default class Media {
           ),
         },
         uPlaneSizes: { value: new THREE.Vector2(0, 0) },
-        uAlpha: { value: 0 },
+        uAlpha: { value: 1 },
       },
     });
   }
@@ -68,18 +54,11 @@ export default class Media {
   }
 
   createBounds() {
-    const rect = this.element.getBoundingClientRect();
-
-    this.bounds = {
-      left: rect.left,
-      top: rect.top + this.scroll,
-      width: rect.width,
-      height: rect.height,
-    };
+    this.bounds = this.element.getBoundingClientRect();
 
     this.updateScale();
     this.updateX();
-    this.updateY(this.scroll);
+    this.updateY();
 
     this.material.uniforms.uPlaneSizes.value = new THREE.Vector2(
       this.mesh.scale.x,
@@ -114,13 +93,13 @@ export default class Media {
   /**
    * Animations.
    */
-  show() {
-    gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
-  }
+  // show() {
+  //   gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
+  // }
 
-  hide() {
-    gsap.to(this.material.uniforms.uAlpha, { value: 0 });
-  }
+  // hide() {
+  //   gsap.to(this.material.uniforms.uAlpha, { value: 0 });
+  // }
 
   /**
    * Events.
@@ -136,8 +115,6 @@ export default class Media {
    * Loop.
    */
   update({ scroll }) {
-    this.scroll = scroll;
-
     this.updateY(scroll);
   }
 }

@@ -33,6 +33,7 @@ export default class Home extends Page {
         }px)`;
       }
     });
+
     super.update();
   }
 }

@@ -13,8 +13,6 @@ export default class Media {
     this.screen = screen;
     this.geometry = geometry;
 
-    this.scroll = 0;
-
     this.createTexture();
     this.createMaterial();
     this.createMesh();
@@ -26,13 +24,9 @@ export default class Media {
   createTexture() {
     this.imageElement = this.element.querySelector('img');
 
-    const textureLoader = new THREE.TextureLoader();
-    this.texture = textureLoader.load(
-      this.imageElement.getAttribute('src'),
-      (texture) => {
-        this.material.uniforms.uTexture.value = texture;
-      }
-    );
+    const src = this.imageElement.getAttribute('src');
+
+    this.texture = window.TEXTURES[src];
   }
 
   createMaterial() {
@@ -64,18 +58,11 @@ export default class Media {
   }
 
   createBounds() {
-    const rect = this.element.getBoundingClientRect();
-
-    this.bounds = {
-      left: rect.left,
-      top: rect.top + this.scroll,
-      width: rect.width,
-      height: rect.height,
-    };
+    this.bounds = this.element.getBoundingClientRect();
 
     this.updateScale();
     this.updateX();
-    this.updateY(this.scroll);
+    this.updateY();
 
     this.material.uniforms.uPlaneSizes.value = new THREE.Vector2(
       this.mesh.scale.x,
@@ -132,9 +119,6 @@ export default class Media {
    * Loop.
    */
   update({ scroll, velocity }) {
-    this.scroll = scroll;
-    this.time += 0.01;
-
     this.material.uniforms.uVelocity.value = velocity;
 
     this.updateY(scroll);

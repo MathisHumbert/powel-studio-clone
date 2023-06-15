@@ -7,13 +7,6 @@ uniform float uAlpha;
 
 varying vec2 vUv;
 
-vec3 adjustSaturation(vec3 color, float value) {
-  const vec3 luminosityFactor = vec3(0.2126, 0.7152, 0.0722);
-  vec3 grayscale = vec3(dot(color, luminosityFactor));
-
-  return mix(grayscale, color, 1.0 + value);
-}
-
 vec2 getCorrectUv (vec2 planeSizes, vec2 imageSizes, vec2 uv){
   vec2 ratio = vec2(
     min(((planeSizes.x / planeSizes.y) / (imageSizes.x / imageSizes.y)), 1.),

@@ -23,8 +23,6 @@ export default class Logo {
     this.onMouseMove();
     this.onMouseEnter();
     this.onMouseLeave();
-
-    console.log('create Logo');
   }
 
   /**
@@ -33,7 +31,9 @@ export default class Logo {
   createTexture() {
     const textureLoader = new THREE.TextureLoader();
 
-    textureLoader.load('powell-studio.png', (texture) => {
+    const src = this.element.getAttribute('data-src');
+
+    textureLoader.load(src, (texture) => {
       this.material.uniforms.uTexture.value = texture;
     });
   }
@@ -45,7 +45,7 @@ export default class Logo {
       uniforms: {
         uTexture: { value: null },
         uMouse: { value: this.mouse },
-        uAlpha: { value: 1 },
+        uAlpha: { value: 0 },
         uRes: {
           value: new THREE.Vector2(this.screen.width, this.screen.height),
         },
@@ -66,7 +66,7 @@ export default class Logo {
 
     this.updateScale();
     this.updateX();
-    this.updateY(0);
+    this.updateY();
   }
 
   /**
