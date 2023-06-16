@@ -1,9 +1,9 @@
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 import each from 'lodash/each';
 import Prefix from 'prefix';
 import normalizeWheel from 'normalize-wheel';
 
-import DetectionManager from './Detection';
 export default class Page {
   constructor({ element, elements, id, isScrollable = true }) {
     this.selector = element;
@@ -22,11 +22,13 @@ export default class Page {
       velocity: 0,
       ease: 0.1,
     };
+    this.clamp = gsap.utils.clamp(0, this.scroll.limit);
+
     this.isDown = false;
 
     this.transformPrefix = Prefix('transform');
 
-    this.isDesktop = DetectionManager.isDesktop();
+    this.isDesktop = document.body.classList.contains('desktop');
   }
 
   create() {
@@ -42,6 +44,8 @@ export default class Page {
       velocity: 0,
       ease: 0.05,
     };
+
+    this.clamp = gsap.utils.clamp(0, this.scroll.limit);
 
     each(this.selectorChildren, (entry, key) => {
       if (
@@ -108,6 +112,8 @@ export default class Page {
     if (this.elements.wrapper) {
       this.scroll.limit =
         this.elements.wrapper.clientHeight - window.innerHeight;
+
+      this.clamp = gsap.utils.clamp(0, this.scroll.limit);
     }
   }
 
@@ -145,11 +151,7 @@ export default class Page {
    * Loop.
    */
   update() {
-    this.scroll.target = gsap.utils.clamp(
-      0,
-      this.scroll.limit,
-      this.scroll.target
-    );
+    this.scroll.target = this.clamp(this.scroll.target);
 
     this.scroll.current = gsap.utils.interpolate(
       this.scroll.current,
@@ -178,5 +180,7 @@ export default class Page {
     this.scroll.velocity = (this.scroll.current - this.scroll.last) * 0.05;
 
     this.scroll.last = this.scroll.current;
+
+    ScrollTrigger.update();
   }
 }

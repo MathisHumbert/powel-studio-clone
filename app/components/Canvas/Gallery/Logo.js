@@ -119,7 +119,9 @@ export default class Logo {
   }
 
   onMouseMove() {
-    this.headerElement.addEventListener('mousemove', (event) => {
+    window.addEventListener('mousemove', (event) => {
+      if (this.material.uniforms.uHover.value === 0) return;
+
       gsap.to(this.mouse, {
         x: (event.clientX / this.screen.width) * 2 - 1,
         y: -(event.clientY / this.screen.height) * 2 + 1,

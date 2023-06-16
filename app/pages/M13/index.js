@@ -1,7 +1,8 @@
-import Page from 'classes/Page';
-
+import { gsap } from 'gsap';
 import { each } from 'lodash';
 import Prefix from 'prefix';
+
+import Page from 'classes/Page';
 
 export default class M13 extends Page {
   constructor() {
@@ -28,5 +29,23 @@ export default class M13 extends Page {
     });
 
     super.update();
+  }
+
+  createAnimations() {
+    // gsap.to('.m13__header h1', {
+    //   x: '80vw',
+    //   rotation: 360,
+    //   ease: 'none',
+    //   scrollTrigger: {
+    //     trigger: '.m13__header h1',
+    //     start: 'center center',
+    //     end: '+=100%',
+    //     scrub: true,
+    //     markers: true,
+    //     pin: true,
+    //   },
+    // });
+
+    super.createAnimations();
   }
 }

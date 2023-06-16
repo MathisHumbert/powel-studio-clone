@@ -4,8 +4,8 @@ block variables
   - var template = 'home'
 
 block content
-  .home
-    .home__wrapper 
+  .home(data-background="#ffffff" data-color="#000000")
+    .home__wrapper#wrapper
       header.home__header
         h1=home.data.title
         svg(data-src="powell-studio.png" xmlns='http://www.w3.org/2000/svg' viewbox='0 0 1500 610' )

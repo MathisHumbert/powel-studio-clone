@@ -1,8 +1,8 @@
 import { each } from 'lodash';
 import * as THREE from 'three';
 
-import Media from './Media';
-import Logo from './Logo';
+import Media from '../Gallery/Media';
+import Logo from '../Gallery/Logo';
 
 export default class Home {
   constructor({ scene, viewport, screen, geometry }) {
@@ -13,6 +13,7 @@ export default class Home {
 
     this.mediaListElements = document.querySelectorAll('.home__project__list');
     this.logoElement = document.querySelector('.home__header svg');
+    this.headerElement = document.querySelector('.home__header');
 
     this.createGallery();
     this.createLogo();
@@ -55,6 +56,7 @@ export default class Home {
   createLogo() {
     this.logo = new Logo({
       element: this.logoElement,
+      headerElement: this.headerElement,
       scene: this.scene,
       viewport: this.viewport,
       screen: this.screen,

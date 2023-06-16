@@ -54,7 +54,6 @@ export default class M13 {
   }
 
   createLogo() {
-    console.log(this.logoElement);
     this.logo = new Logo({
       element: this.logoElement,
       headerElement: this.headerElement,

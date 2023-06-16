@@ -132,27 +132,19 @@ export default class Canvas {
   }
 
   onChangeEnd(template) {
-    if (this.project) {
-      this.destroyProject();
-    }
-
     if (this.home) {
       this.destroyHome();
-    }
-
-    if (this.m13) {
+    } else if (this.project) {
+      this.destroyProject();
+    } else if (this.m13) {
       this.destroyM13();
     }
 
     if (template === 'project') {
       this.createProject();
-    }
-
-    if (template === 'm13') {
+    } else if (template === 'm13') {
       this.createM13();
-    }
-
-    if (template === 'home') {
+    } else if (template === 'home') {
       this.createHome();
     }
 

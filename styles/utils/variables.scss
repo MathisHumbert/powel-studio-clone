@@ -1,5 +1,10 @@
-$main-bg-color: #ffffff;
-$main-text-color: #000000;
+:root {
+  --main-bg-color: #fff;
+  --main-text-color: #000;
+}
+
+$main-bg-color: #fff;
+$main-text-color: #000;
 
 $font-sohnebreit-halbfett: 'SohneBreit-Halbfett';
 $font-nb-akademie: 'NB Akademie Pro';

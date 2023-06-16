@@ -19,6 +19,26 @@
 */
 
 /*!
+ * Observer 3.12.0
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2023, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * ScrollTrigger 3.12.0
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2023, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
  * imagesLoaded v5.0.0
  * JavaScript is all like "You images are done yet or what?"
  * MIT License
@@ -36,19 +56,17 @@
 
 /*! ./CSSPlugin.js */
 
-/*! ./Detection */
-
 /*! ./ExecutionEnvironment */
 
 /*! ./Home/index */
 
 /*! ./Logger */
 
-/*! ./Logo */
-
 /*! ./M13/index */
 
 /*! ./Media */
+
+/*! ./Observer.js */
 
 /*! ./Project/index */
 
@@ -194,6 +212,8 @@
 
 /*! gsap */
 
+/*! gsap/all */
+
 /*! html-entities */
 
 /*! imagesloaded */
@@ -254,10 +274,6 @@
   !*** ./app/pages/Home/index.js ***!
   \*********************************/
 
-/*!**********************************!*\
-  !*** ./app/classes/Detection.js ***!
-  \**********************************/
-
 /*!************************************!*\
   !*** ./app/pages/Project/index.js ***!
   \************************************/
@@ -288,6 +304,10 @@
 
 /*!***************************************!*\
   !*** ./node_modules/events/events.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/gsap/Observer.js ***!
   \***************************************/
 
 /*!***************************************!*\
@@ -411,11 +431,11 @@
       \********************************************/
 
 /*!********************************************!*\
-  !*** ./app/components/Canvas/Home/Logo.js ***!
+  !*** ./app/components/Canvas/M13/index.js ***!
   \********************************************/
 
 /*!********************************************!*\
-  !*** ./app/components/Canvas/M13/index.js ***!
+  !*** ./node_modules/gsap/ScrollTrigger.js ***!
   \********************************************/
 
 /*!********************************************!*\
@@ -441,10 +461,6 @@
 /*!********************************************!*\
   !*** ./node_modules/lodash/isArrayLike.js ***!
   \********************************************/
-
-/*!*********************************************!*\
-  !*** ./app/components/Canvas/Home/Media.js ***!
-  \*********************************************/
 
 /*!*********************************************!*\
   !*** ./app/components/Canvas/Home/index.js ***!

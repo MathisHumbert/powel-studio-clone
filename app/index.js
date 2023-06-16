@@ -1,3 +1,5 @@
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 import { each, map } from 'lodash';
 import imagesLoaded from 'imagesloaded';
 import * as THREE from 'three';
@@ -6,6 +8,8 @@ import Home from 'pages/Home';
 import Project from 'pages/Project';
 import M13 from 'pages/M13';
 import Canvas from 'components/Canvas';
+
+gsap.registerPlugin(ScrollTrigger);
 
 class App {
   constructor() {
@@ -95,6 +99,27 @@ class App {
     };
 
     this.page = this.pages[this.template];
+
+    ScrollTrigger.scrollerProxy('#wrapper', {
+      scrollTop: (value) => {
+        if (arguments.length) {
+          this.page.scroll.current = value; // setter
+        }
+        return this.page.scroll.current; // getter
+      },
+
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
+    ScrollTrigger.defaults({ scroller: '#wrapper' });
+
     this.page.create(true);
   }
 

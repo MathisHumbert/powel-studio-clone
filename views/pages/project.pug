@@ -4,8 +4,8 @@ block variables
   - var template = 'project'
 
 block content
-  .project
-    .project__wrapper
+  .project(data-background=project.data.background_color data-color=project.data.text_color)
+    .project__wrapper#wrapper
       section.project__gallery
         .project__gallery__wrapper
           each gallery, index in project.data.body

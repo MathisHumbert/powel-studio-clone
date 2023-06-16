@@ -8,11 +8,10 @@
 html {
   @extend %cover;
 
-  background: $main-bg-color;
-  background: #262626;
-  color: $main-text-color;
   position: fixed;
   overflow: hidden;
+  background: $main-bg-color;
+  color: $main-text-color;
 }
 
 body {

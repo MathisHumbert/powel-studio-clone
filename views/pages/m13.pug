@@ -4,8 +4,8 @@ block variables
   - var template = 'm13'
 
 block content
-  .m13
-    .m13__wrapper
+  .m13(data-background="#262626" data-color="#ffffff")
+    .m13__wrapper#wrapper
       header.m13__header
         h1!=m13.data.title.replace(/\n/g, '<br>')
         svg(data-src="m13.png" xmlns='http://www.w3.org/2000/svg' viewbox='0 0 1011 371')
@@ -15,8 +15,7 @@ block content
           section.m13__project__list
             each media in el.items
                 article.m13__project__item
-                  a.m13__project__link(href=Link(media.link)) 
-                    figure.m13__project__media
-                      img.m13__project__media__image(src=media.image.url, alt=media.image.alt)
+                  figure.m13__project__media
+                    img.m13__project__media__image(src=media.image.url, alt=media.image.alt)
                   h3.m13__project__title=media.title       
       include ../layouts/footer
