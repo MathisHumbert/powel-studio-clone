@@ -1,5 +1,9 @@
 .m13 {
   @extend %page;
+
+  background: $main-bg-color;
+  color: $main-text-color;
+  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
 }
 
 .m13__wrapper {
@@ -16,6 +20,7 @@
   max-width: 70%;
   min-height: 80vh;
   width: calc(100% + 20px);
+  z-index: 10;
 
   h1 {
     @extend %description-12;

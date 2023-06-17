@@ -1,5 +1,9 @@
 .project {
   @extend %page;
+
+  background: $main-bg-color;
+  color: $main-text-color;
+  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
 }
 
 .project__wrapper {

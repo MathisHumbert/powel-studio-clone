@@ -3,6 +3,9 @@ import { ScrollTrigger } from 'gsap/all';
 import each from 'lodash/each';
 import Prefix from 'prefix';
 import normalizeWheel from 'normalize-wheel';
+import { ColorsManager } from 'classes/Colors';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default class Page {
   constructor({ element, elements, id, isScrollable = true }) {
@@ -79,6 +82,11 @@ export default class Page {
     this.isVisible = true;
 
     return new Promise((res) => {
+      ColorsManager.change({
+        background: this.element.getAttribute('data-background'),
+        color: this.element.getAttribute('data-color'),
+      });
+
       const tl = gsap.timeline();
 
       tl.fromTo(this.element, { autoAlpha: 0 }, { autoAlpha: 1 }).call(() =>

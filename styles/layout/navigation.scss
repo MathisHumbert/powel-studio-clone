@@ -5,6 +5,8 @@
   padding-top: 20px;
   pointer-events: none;
   z-index: z('navigation');
+  color: $main-text-color;
+  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
 }
 
 .navigation__wrapper {

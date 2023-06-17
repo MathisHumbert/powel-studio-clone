@@ -32,19 +32,18 @@ export default class M13 extends Page {
   }
 
   createAnimations() {
-    // gsap.to('.m13__header h1', {
-    //   x: '80vw',
-    //   rotation: 360,
-    //   ease: 'none',
-    //   scrollTrigger: {
-    //     trigger: '.m13__header h1',
-    //     start: 'center center',
-    //     end: '+=100%',
-    //     scrub: true,
-    //     markers: true,
-    //     pin: true,
-    //   },
-    // });
+    console.log('animate');
+    gsap.to('.m13__header h1', {
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.m13__header h1',
+        start: 'center center',
+        end: '+=100%',
+        scrub: true,
+        markers: true,
+      },
+    });
 
     super.createAnimations();
   }

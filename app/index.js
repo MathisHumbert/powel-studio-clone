@@ -1,13 +1,12 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import { each, map } from 'lodash';
-import imagesLoaded from 'imagesloaded';
-import * as THREE from 'three';
+import each from 'lodash/each';
 
 import Home from 'pages/Home';
 import Project from 'pages/Project';
 import M13 from 'pages/M13';
 import Canvas from 'components/Canvas';
+import { Loader } from './classes/Loader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,61 +24,41 @@ class App {
     this.update();
   }
 
-  createPreloader() {
-    // TOFO: create Preloader Component
+  /**
+   * Create.
+   */
+  createScrollTrigger() {
+    ScrollTrigger.scrollerProxy('#wrapper', {
+      scrollTop: (value) => {
+        if (arguments.length) {
+          this.page.scroll.current = value;
+        }
+        return this.page.scroll.current;
+      },
 
-    this.loadedTextureUrl = [window.location.pathname];
-    this.textureLoader = new THREE.TextureLoader();
-
-    window.TEXTURES = {};
-
-    const images = this.content.querySelectorAll('img');
-
-    // TODO: create a function to load textures and images
-
-    Promise.all(
-      map(images, (image) => {
-        return new Promise((res) => {
-          const src = image.getAttribute('src');
-          this.textureLoader.load(src, (texture) => {
-            window.TEXTURES[src] = texture;
-
-            res();
-          });
-        });
-      })
-    ).then(() => {
-      this.onPreloaded();
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
     });
+
+    ScrollTrigger.defaults({ scroller: '#wrapper' });
+  }
+
+  createPreloader() {
+    // TODO: create Preloader Component
+
+    this.loader = new Loader();
+
+    this.loader.load(this.content, this.onPreloaded.bind(this));
   }
 
   createLoader() {
-    if (!this.loadedTextureUrl.includes(window.location.pathname)) {
-      this.loadedTextureUrl.push(window.location.pathname);
-
-      const images = this.content.querySelectorAll('img');
-
-      Promise.all(
-        map(images, (image) => {
-          return new Promise((res) => {
-            const src = image.getAttribute('src');
-            this.textureLoader.load(src, (texture) => {
-              window.TEXTURES[src] = texture;
-
-              res();
-            });
-          });
-        })
-      ).then(() => {
-        this.onLoaded();
-      });
-    } else {
-      const imgLoaded = imagesLoaded(this.content);
-
-      imgLoaded.on('done', () => {
-        this.onLoaded();
-      });
-    }
+    this.loader.load(this.content, this.onLoaded.bind(this));
   }
 
   createCanvas() {
@@ -100,25 +79,7 @@ class App {
 
     this.page = this.pages[this.template];
 
-    ScrollTrigger.scrollerProxy('#wrapper', {
-      scrollTop: (value) => {
-        if (arguments.length) {
-          this.page.scroll.current = value; // setter
-        }
-        return this.page.scroll.current; // getter
-      },
-
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-    });
-
-    ScrollTrigger.defaults({ scroller: '#wrapper' });
+    this.createScrollTrigger();
 
     this.page.create(true);
   }
@@ -150,6 +111,8 @@ class App {
   }
 
   async onChange({ url, push }) {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+
     this.canvas.onChangeStart();
 
     await this.page.hide();
@@ -171,6 +134,8 @@ class App {
 
       this.content.innerHTML = divContent.innerHTML;
       this.content.setAttribute('data-template', this.template);
+
+      this.createScrollTrigger();
 
       this.page = this.pages[this.template];
       this.page.create();
