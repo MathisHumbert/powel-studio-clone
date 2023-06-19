@@ -1,10 +1,3 @@
-import { gsap } from 'gsap';
-import { CustomEase } from 'gsap/all';
-
-gsap.registerPlugin(CustomEase);
-
-CustomEase.create('color-ease', '0, 0.5, 0.5, 1');
-
 class Colors {
   constructor() {}
 

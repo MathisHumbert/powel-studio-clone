@@ -5,6 +5,8 @@ import each from 'lodash/each';
 import Home from 'pages/Home';
 import Project from 'pages/Project';
 import M13 from 'pages/M13';
+import Studio from 'pages/Studio';
+
 import Canvas from 'components/Canvas';
 import { Loader } from './classes/Loader';
 
@@ -75,6 +77,7 @@ class App {
       home: new Home(),
       project: new Project(),
       m13: new M13(),
+      studio: new Studio(),
     };
 
     this.page = this.pages[this.template];

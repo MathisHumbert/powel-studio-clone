@@ -1,9 +1,11 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import each from 'lodash/each';
+import { each, map } from 'lodash';
 import Prefix from 'prefix';
 import normalizeWheel from 'normalize-wheel';
+
 import { ColorsManager } from 'classes/Colors';
+import Title from 'animations/Title';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +14,7 @@ export default class Page {
     this.selector = element;
     this.selectorChildren = {
       ...elements,
+      animationsTitles: '[data-animation="title"]',
     };
     this.id = id;
     this.isScrollable = isScrollable;
@@ -72,7 +75,16 @@ export default class Page {
   }
 
   createAnimations() {
-    // create reusable animations
+    this.animations = [];
+
+    this.animationsTitles = map(
+      this.elements.animationsTitles,
+      (element, index) => {
+        return new Title({ element, index });
+      }
+    );
+
+    this.animations.push(...this.animationsTitles);
   }
 
   /**
@@ -122,6 +134,10 @@ export default class Page {
         this.elements.wrapper.clientHeight - window.innerHeight;
 
       this.clamp = gsap.utils.clamp(0, this.scroll.limit);
+    }
+
+    if (this.animations && this.animations.length > 0) {
+      each(this.animations, (animation) => animation.onResize());
     }
   }
 

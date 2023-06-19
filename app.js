@@ -97,6 +97,16 @@ app.get('/project/:id', async (req, res) => {
 
   res.render('pages/project', { ...defaults, project });
 });
+
+app.get('/studio', async (req, res) => {
+  const api = initApi(req);
+
+  const studio = await api.getSingle('studio');
+  const defaults = await handleRequest(api);
+
+  res.render('pages/studio', { ...defaults, studio });
+});
+
 app.listen(port, () => {
   console.log(`server is listening on port ${port}`);
 });

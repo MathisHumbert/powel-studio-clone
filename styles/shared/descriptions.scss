@@ -4,3 +4,9 @@
   line-height: 1;
   text-transform: uppercase;
 }
+
+%description-24 {
+  font-family: $font-sohnebreit-halbfett;
+  font-size: clamp(24px, 18vw, 60px);
+  line-height: 0.9;
+}
