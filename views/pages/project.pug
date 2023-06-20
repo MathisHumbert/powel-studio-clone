@@ -27,10 +27,10 @@ block content
         a.project__gallery__link(href=Link(project.data.next_link))=`next project : ${project.data.next_text}`
       section.project__content
         .project__content__wrapper
-          h1.project__content__title=project.data.name
-          p.project__content__text.project__content__text--category=project.data.category
-          p.project__content__text.project__content__text--description=project.data.description
+          h1.project__content__title(data-animation="inner-title")=project.data.name
+          p.project__content__text.project__content__text--category(data-animation="inner-title")=project.data.category
+          p.project__content__text.project__content__text--description(data-animation="inner-title")=project.data.description
           .project__content__details 
             each detail in project.data.details
-              p.project__content__text!=detail.text.replace(/\n/g, '<br>')
+              .project__content__text!=PrismicH.asHTML(detail.text).replace(/<p>/g, '<p data-animation="inner-title">')
       include ../layouts/footer

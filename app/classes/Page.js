@@ -6,6 +6,8 @@ import normalizeWheel from 'normalize-wheel';
 
 import { ColorsManager } from 'classes/Colors';
 import Title from 'animations/Title';
+import Text from 'animations/Text';
+import InnerTitle from 'animations/InnerTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +17,8 @@ export default class Page {
     this.selectorChildren = {
       ...elements,
       animationsTitles: '[data-animation="title"]',
+      animationsContainers: '[data-animation="container"]',
+      animationsInnerTitles: '[data-animation="inner-title"]',
     };
     this.id = id;
     this.isScrollable = isScrollable;
@@ -84,7 +88,24 @@ export default class Page {
       }
     );
 
-    this.animations.push(...this.animationsTitles);
+    if (this.elements.animationsInnerTitles !== null) {
+      this.animationsInnerTitles = new InnerTitle({
+        element: document.documentElement,
+        elements: { title: this.elements.animationsInnerTitles },
+      });
+    }
+
+    each(this.elements.animationsContainers, (element, index) => {
+      return new Text({
+        element: element,
+        elements: {
+          text: element.querySelectorAll('[data-animation="text"]'),
+        },
+        playOnce: index === 0,
+      });
+    });
+
+    this.animations.push(...this.animationsTitles, this.animationsInnerTitles);
   }
 
   /**
@@ -137,7 +158,11 @@ export default class Page {
     }
 
     if (this.animations && this.animations.length > 0) {
-      each(this.animations, (animation) => animation.onResize());
+      each(this.animations, (animation) => {
+        if (animation.onResize) {
+          animation.onResize();
+        }
+      });
     }
   }
 

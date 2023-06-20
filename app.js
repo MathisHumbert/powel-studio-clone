@@ -95,6 +95,8 @@ app.get('/project/:id', async (req, res) => {
   const project = await api.getByUID('project', req.params.id);
   const defaults = await handleRequest(api);
 
+  console.log(project.data);
+
   res.render('pages/project', { ...defaults, project });
 });
 

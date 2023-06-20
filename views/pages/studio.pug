@@ -6,36 +6,36 @@ block variables
 block content
   .studio(data-background="#f1f1f1" data-color="#000000")
     .studio__wrapper#wrapper
-      section.studio__info 
+      section.studio__info(data-animation="container") 
         article.studio__left__column
-          h2.studio__left__title=studio.data.info_title
+          h2.studio__left__title(data-animation="text")=studio.data.info_title
         article.studio__right__column
           .studio__info__text!=PrismicH.asHTML(studio.data.info_text).replace(/<p>/g, '<p data-animation="title">')
       each slice in studio.data.body 
         if slice.slice_type === 'studio_list'
-          section.studio__list 
+          section.studio__list(data-animation="container") 
             article.studio__left__column
-              h2.studio__left__title=slice.primary.title1
+              h2.studio__left__title(data-animation="text")=slice.primary.title1
             article.studio__right__column.studio__right__column--grid
               each item in slice.items
-                .studio__list__wrapper
+                .studio__list__wrapper(data-animation="text")
                   h3.studio__list__subtitle=item.subtitle
                   .studio__list__items!=PrismicH.asHTML(item.list)
         if slice.slice_type === 'studio_awards'
-          section.studio__awards 
+          section.studio__awards(data-animation="container")
             article.studio__left__column
-              h2.studio__left__title=slice.primary.title1
+              h2.studio__left__title(data-animation="text")=slice.primary.title1
             article.studio__right__column.studio__right__column--grid
               each item in slice.items
-                .studio__awards__wrapper
+                .studio__awards__wrapper(data-animation="text")
                   .studio__awards__items!=PrismicH.asHTML(item.list)
         if slice.slice_type === 'studio_colophon'
-          section.studio__colophon 
+          section.studio__colophon(data-animation="container") 
             article.studio__left__column
-              h2.studio__left__title=slice.primary.title1
+              h2.studio__left__title(data-animation="text")=slice.primary.title1
             article.studio__right__column
               each item in slice.items
-                .studio__colophon__item
+                .studio__colophon__item(data-animation="text")
                   h3.studio__colophon__subtitle=item.subtitle
                   p.studio__colophon__text!=item.text.replace(/\n/g, '<br>')
       include ../layouts/footer
