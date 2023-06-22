@@ -10,6 +10,8 @@ html {
 
   position: fixed;
   overflow: hidden;
+
+  will-change: background, color;
 }
 
 body {
@@ -37,4 +39,11 @@ canvas {
 
 .content {
   @extend %cover;
+}
+
+.line {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  will-change: transform, opacity, visibility;
 }

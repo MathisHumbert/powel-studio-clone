@@ -7,6 +7,13 @@ uniform float uAlpha;
 
 varying vec2 vUv;
 
+vec3 adjustSaturation(vec3 color, float value) {
+  const vec3 luminosityFactor = vec3(0.2126, 0.7152, 0.0722);
+  vec3 grayscale = vec3(dot(color, luminosityFactor));
+
+  return mix(grayscale, color, 1.0 + value);
+}
+
 vec2 getCorrectUv (vec2 planeSizes, vec2 imageSizes, vec2 uv){
   vec2 ratio = vec2(
     min(((planeSizes.x / planeSizes.y) / (imageSizes.x / imageSizes.y)), 1.),
@@ -20,11 +27,13 @@ vec2 getCorrectUv (vec2 planeSizes, vec2 imageSizes, vec2 uv){
 }
 
 void main(){
-  // vec2 uv = getCorrectUv(uPlaneSizes, uImageSizes, vUv);
+  vec2 uv = getCorrectUv(uPlaneSizes, uImageSizes, vUv);
 
-  // vec4 texture = texture2D(uTexture, uv);
+  vec4 texture = texture2D(uTexture, uv);
 
-  // gl_FragColor = vec4(texture.rgb, 1.);
+  vec3 color = texture.rgb;
 
-  gl_FragColor = vec4(0., 0., 0., 1.);
+  vec3 saturatedColor = adjustSaturation(color, -1. + uAlpha);
+
+  gl_FragColor = vec4(saturatedColor, 1.0);
 }

@@ -17,8 +17,10 @@ export default class Home {
 
     this.createGallery();
     this.createLogo();
-    this.show();
+
     this.onResize({ viewport, screen });
+
+    this.show();
   }
 
   /**
@@ -44,6 +46,10 @@ export default class Home {
           viewport: this.viewport,
           screen: this.screen,
           geometry: this.geometry,
+          onClick: (element) => {
+            this.transitionElement = element;
+            this.transitionElement.mesh.position.y += group.position.y;
+          },
         });
 
         this.medias.push(media);
@@ -141,20 +147,11 @@ export default class Home {
    * Destroy.
    */
   destroy() {
-    this.scene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.geometry.dispose();
+    this.logo.mesh.removeFromParent();
 
-        for (const key in child.material) {
-          const value = child.material[key];
-
-          if (value && typeof value.dispose === 'function') {
-            value.dispose();
-          }
-        }
-      }
+    each(this.groups, (group) => {
+      group.clear();
+      group.removeFromParent();
     });
-
-    this.scene.children = [];
   }
 }

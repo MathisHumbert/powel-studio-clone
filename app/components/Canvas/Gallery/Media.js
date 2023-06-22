@@ -5,19 +5,21 @@ import vertex from 'shaders/gallery-vertex.glsl';
 import fragment from 'shaders/gallery-fragment.glsl';
 
 export default class Media {
-  constructor({ element, index, scene, viewport, screen, geometry }) {
+  constructor({ element, index, scene, viewport, screen, geometry, onClick }) {
     this.element = element;
     this.index = index;
     this.scene = scene;
     this.viewport = viewport;
     this.screen = screen;
     this.geometry = geometry;
+    this.onClick = onClick;
 
     this.createTexture();
     this.createMaterial();
     this.createMesh();
     this.onMouseEnter();
     this.onMouseLeave();
+    this.onMouseClick();
   }
 
   /**
@@ -35,6 +37,7 @@ export default class Media {
     this.material = new THREE.RawShaderMaterial({
       fragmentShader: fragment,
       vertexShader: vertex,
+      transparent: true,
       uniforms: {
         uTexture: { value: this.texture },
         uImageSizes: {
@@ -98,11 +101,19 @@ export default class Media {
    * Animations.
    */
   show() {
-    gsap.fromTo(this.material.uniforms.uAlpha, { value: 0 }, { value: 1 });
+    gsap.fromTo(
+      this.material.uniforms.uAlpha,
+      { value: 0 },
+      { value: 1, duration: 0.6, ease: 'custom-ease' }
+    );
   }
 
   hide() {
-    gsap.to(this.material.uniforms.uAlpha, { value: 0 });
+    gsap.to(this.material.uniforms.uAlpha, {
+      value: 0,
+      duration: 0.6,
+      ease: 'custom-ease',
+    });
   }
 
   /**
@@ -125,6 +136,14 @@ export default class Media {
     this.element.addEventListener('mouseleave', () => {
       gsap.to(this.material.uniforms.uHover, { value: 0 });
     });
+  }
+
+  onMouseClick() {
+    if (this.onClick !== undefined) {
+      this.element.addEventListener('click', () => {
+        this.onClick(this);
+      });
+    }
   }
 
   /**

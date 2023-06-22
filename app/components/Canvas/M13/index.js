@@ -17,8 +17,10 @@ export default class M13 {
 
     this.createGallery();
     this.createLogo();
-    this.show();
+
     this.onResize({ viewport, screen });
+
+    this.show();
   }
 
   /**

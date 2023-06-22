@@ -9,8 +9,6 @@ import Title from 'animations/Title';
 import Text from 'animations/Text';
 import InnerTitle from 'animations/InnerTitle';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default class Page {
   constructor({ element, elements, id, isScrollable = true }) {
     this.selector = element;
@@ -35,6 +33,7 @@ export default class Page {
     this.clamp = gsap.utils.clamp(0, this.scroll.limit);
 
     this.isDown = false;
+    this.isVisible = false;
 
     this.transformPrefix = Prefix('transform');
 
@@ -44,6 +43,11 @@ export default class Page {
   create() {
     this.element = document.querySelector(this.selector);
     this.elements = {};
+
+    ColorsManager.change({
+      background: this.element.getAttribute('data-background'),
+      color: this.element.getAttribute('data-color'),
+    });
 
     this.scroll = {
       position: 0,
@@ -74,8 +78,6 @@ export default class Page {
         }
       }
     });
-
-    this.createAnimations();
   }
 
   createAnimations() {
@@ -93,6 +95,8 @@ export default class Page {
         element: document.documentElement,
         elements: { title: this.elements.animationsInnerTitles },
       });
+
+      this.animations.push(this.animationsInnerTitles);
     }
 
     each(this.elements.animationsContainers, (element, index) => {
@@ -105,26 +109,29 @@ export default class Page {
       });
     });
 
-    this.animations.push(...this.animationsTitles, this.animationsInnerTitles);
+    this.animations.push(...this.animationsTitles);
   }
 
   /**
    * Animations.
    */
-  show() {
-    this.isVisible = true;
+  show({ animation }) {
+    this.createAnimations();
 
-    return new Promise((res) => {
-      ColorsManager.change({
-        background: this.element.getAttribute('data-background'),
-        color: this.element.getAttribute('data-color'),
-      });
+    if (animation) {
+      this.animationIn = animation;
+    } else {
+      this.animationIn = gsap.timeline();
 
-      const tl = gsap.timeline();
-
-      tl.fromTo(this.element, { autoAlpha: 0 }, { autoAlpha: 1 }).call(() =>
-        res()
+      this.animationIn.fromTo(
+        this.element,
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.6, ease: 'custom-ease' }
       );
+    }
+
+    this.animationIn.call(() => {
+      this.isVisible = true;
     });
   }
 
@@ -132,7 +139,12 @@ export default class Page {
     this.isVisible = false;
 
     return new Promise((res) => {
-      gsap.to(this.element, { autoAlpha: 0, onComplete: () => res() });
+      gsap.to(this.element, {
+        autoAlpha: 0,
+        duration: 0.6,
+        ease: 'custom-ease',
+        onComplete: () => res(),
+      });
     });
   }
 
@@ -159,7 +171,7 @@ export default class Page {
 
     if (this.animations && this.animations.length > 0) {
       each(this.animations, (animation) => {
-        if (animation.onResize) {
+        if (animation && animation.onResize) {
           animation.onResize();
         }
       });
@@ -167,7 +179,7 @@ export default class Page {
   }
 
   onTouchDown(event) {
-    if (this.isDesktop) return;
+    if (this.isDesktop || !this.isVisible) return;
 
     this.isDown = true;
 
@@ -176,7 +188,7 @@ export default class Page {
   }
 
   onTouchMove(event) {
-    if (this.isDesktop || !this.isDown) return;
+    if (this.isDesktop || !this.isDown || !this.isVisible) return;
 
     const y = event.touches ? event.touches[0].clientY : event.clientY;
     const distance = this.start - y;
@@ -185,12 +197,14 @@ export default class Page {
   }
 
   onTouchUp() {
-    if (this.isDesktop) return;
+    if (this.isDesktop || !this.isVisible) return;
 
     this.isDown = false;
   }
 
   onWheel(event) {
+    if (!this.isVisible) return;
+
     const { pixelY } = normalizeWheel(event);
 
     this.scroll.target += pixelY;
@@ -200,6 +214,8 @@ export default class Page {
    * Loop.
    */
   update() {
+    if (!this.isVisible) return;
+
     this.scroll.target = this.clamp(this.scroll.target);
 
     this.scroll.current = gsap.utils.interpolate(

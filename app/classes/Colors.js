@@ -1,9 +1,15 @@
+import { gsap } from 'gsap';
+
 class Colors {
   constructor() {}
 
   change({ background, color }) {
-    document.documentElement.style.setProperty('--main-bg-color', background);
-    document.documentElement.style.setProperty('--main-text-color', color);
+    gsap.to(document.documentElement, {
+      color,
+      background,
+      duration: 0.6,
+      ease: 'custom-ease',
+    });
   }
 }
 

@@ -3,11 +3,11 @@
 
   opacity: 0;
   visibility: hidden;
+  will-change: opacity, visibility;
 }
 
 %page__wrapper {
   color: inherit;
-
   will-change: transform;
   z-index: z('content');
 }

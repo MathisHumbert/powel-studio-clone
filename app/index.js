@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
+import { ScrollTrigger, CustomEase } from 'gsap/all';
 import each from 'lodash/each';
 
 import Home from 'pages/Home';
@@ -8,9 +8,12 @@ import M13 from 'pages/M13';
 import Studio from 'pages/Studio';
 
 import Canvas from 'components/Canvas';
-import { Loader } from './classes/Loader';
+import Loader from 'components/Loader';
+import Navigation from 'components/Navigation';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, CustomEase);
+
+CustomEase.create('custom-ease', '0, 0.5, 0.5, 1');
 
 class App {
   constructor() {
@@ -19,6 +22,7 @@ class App {
     this.createCanvas();
     this.createPages();
     this.createPreloader();
+    this.createNavigation();
 
     this.addEventsListeners();
     this.addLinkListeners();
@@ -52,11 +56,9 @@ class App {
   }
 
   createPreloader() {
-    // TODO: create Preloader Component
-
     this.loader = new Loader();
 
-    this.loader.load(this.content, this.onPreloaded.bind(this));
+    this.loader.preload(this.content, this.onPreloaded.bind(this));
   }
 
   createLoader() {
@@ -67,9 +69,14 @@ class App {
     this.canvas = new Canvas({ template: this.template });
   }
 
+  createNavigation() {
+    this.navigation = new Navigation();
+  }
+
   createContent() {
     this.content = document.querySelector('.content');
     this.template = this.content.getAttribute('data-template');
+    this.oldTemplate = this.template;
   }
 
   createPages() {
@@ -95,7 +102,7 @@ class App {
 
     this.canvas.onPreloaded();
 
-    this.page.show();
+    this.page.show({ oldTemplate: this.oldTemplate });
   }
 
   onLoaded() {
@@ -103,7 +110,7 @@ class App {
 
     this.canvas.onLoaded(this.template);
 
-    this.page.show();
+    this.page.show({ oldTemplate: this.oldTemplate });
   }
 
   onPopState() {
@@ -116,9 +123,11 @@ class App {
   async onChange({ url, push }) {
     ScrollTrigger.getAll().forEach((t) => t.kill());
 
-    this.canvas.onChangeStart();
+    this.canvas.onChangeStart(this.template, url);
 
     await this.page.hide();
+
+    this.oldTemplate = this.template;
 
     const request = await window.fetch(url);
 
@@ -132,6 +141,8 @@ class App {
         window.history.pushState({}, '', url);
       }
 
+      this.navigation.onChange();
+
       const divContent = div.querySelector('.content');
       this.template = divContent.getAttribute('data-template');
 
@@ -141,6 +152,7 @@ class App {
       this.createScrollTrigger();
 
       this.page = this.pages[this.template];
+
       this.page.create();
 
       this.createLoader();

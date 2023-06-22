@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import Home from './Home/index';
 import Project from './Project/index';
 import M13 from './M13/index';
+import Transition from './Transition';
 
 export default class Canvas {
   constructor({ template }) {
@@ -77,6 +78,7 @@ export default class Canvas {
       viewport: this.viewport,
       screen: this.screen,
       geometry: this.geometry,
+      transition: this.transition,
     });
   }
 
@@ -117,7 +119,7 @@ export default class Canvas {
     this.onChangeEnd(template);
   }
 
-  onChangeStart() {
+  onChangeStart(template, url) {
     if (this.home) {
       this.home.hide();
     }
@@ -129,22 +131,40 @@ export default class Canvas {
     if (this.project) {
       this.project.hide();
     }
+
+    if (template === 'home' && url.includes('project')) {
+      this.transition = new Transition({
+        element: this.home.transitionElement,
+        scene: this.scene,
+        sizes: this.sizes,
+        geometry: this.geometry,
+        destroyTransition: () => (this.transition = null),
+      });
+    }
   }
 
   onChangeEnd(template) {
     if (this.home) {
       this.destroyHome();
-    } else if (this.project) {
+    }
+
+    if (this.project) {
       this.destroyProject();
-    } else if (this.m13) {
+    }
+
+    if (this.m13) {
       this.destroyM13();
     }
 
     if (template === 'project') {
       this.createProject();
-    } else if (template === 'm13') {
+    }
+
+    if (template === 'm13') {
       this.createM13();
-    } else if (template === 'home') {
+    }
+
+    if (template === 'home') {
       this.createHome();
     }
 
@@ -200,6 +220,10 @@ export default class Canvas {
 
     if (this.m13 && this.m13.update) {
       this.m13.update({ scroll, velocity });
+    }
+
+    if (this.transition && this.transition.update) {
+      this.transition.update();
     }
 
     this.renderer.render(this.scene, this.camera);

@@ -32,16 +32,14 @@ export default class M13 extends Page {
   }
 
   createAnimations() {
-    console.log('animate');
     gsap.to('.m13__header h1', {
       opacity: 0,
       ease: 'none',
       scrollTrigger: {
-        trigger: '.m13__header h1',
-        start: 'center center',
-        end: '+=100%',
+        trigger: '.m13__header',
+        start: 'top top',
+        end: '+=100px',
         scrub: true,
-        markers: true,
       },
     });
 

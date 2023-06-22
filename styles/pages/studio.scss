@@ -1,9 +1,5 @@
 .studio {
   @extend %page;
-
-  background: $main-bg-color;
-  color: $main-text-color;
-  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
 }
 
 .studio__wrapper {
@@ -65,11 +61,15 @@
 .studio__list__subtitle {
   min-height: 2.95em;
   max-width: 155px;
-  margin-bottom: 0.5;
+  margin-bottom: 0.5rem;
 }
 
 .studio__list__items {
   margin-right: -40px;
+
+  p {
+    @extend %description-12;
+  }
 }
 
 .studio__awards {

@@ -1,12 +1,6 @@
 import { gsap } from 'gsap';
-import { CustomEase } from 'gsap/all';
 
 import Animation from 'classes/Animation';
-
-gsap.registerPlugin(CustomEase);
-
-CustomEase.create('title-ease', '0, 0.5, 0.5, 1');
-
 export default class Text extends Animation {
   constructor({ element, elements, playOnce }) {
     super({ element, elements });
@@ -25,7 +19,7 @@ export default class Text extends Animation {
       {
         yPercent: 0,
         autoAlpha: 1,
-        ease: 'title-ease',
+        ease: 'custom-ease',
         duration: 0.6,
         delay: 0.05,
         onComplete: () => {
