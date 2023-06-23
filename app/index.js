@@ -8,7 +8,7 @@ import M13 from 'pages/M13';
 import Studio from 'pages/Studio';
 
 import Canvas from 'components/Canvas';
-import Loader from 'components/Loader';
+import Preloader from 'components/Preloader';
 import Navigation from 'components/Navigation';
 
 gsap.registerPlugin(ScrollTrigger, CustomEase);
@@ -56,13 +56,13 @@ class App {
   }
 
   createPreloader() {
-    this.loader = new Loader();
+    this.preloader = new Preloader();
 
-    this.loader.preload(this.content, this.onPreloaded.bind(this));
+    this.preloader.preload(this.content, this.onPreloaded.bind(this));
   }
 
   createLoader() {
-    this.loader.load(this.content, this.onLoaded.bind(this));
+    this.preloader.load(this.content, this.onLoaded.bind(this));
   }
 
   createCanvas() {

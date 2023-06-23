@@ -41,7 +41,6 @@ export default class Logo {
     this.material = new THREE.RawShaderMaterial({
       fragmentShader: fragment,
       vertexShader: vertex,
-      transparent: true,
       uniforms: {
         uTexture: { value: null },
         uMouse: { value: this.mouse },
@@ -100,11 +99,18 @@ export default class Logo {
     gsap.fromTo(
       this.material.uniforms.uAlpha,
       { value: 0 },
-      { value: 1, duration: 0.6, ease: 'custom-ease' }
+      {
+        value: 1,
+        duration: 0.6,
+        ease: 'custom-ease',
+        onComplete: () => (this.material.transparent = false),
+      }
     );
   }
 
   hide() {
+    this.material.transparent = true;
+
     gsap.to(this.material.uniforms.uAlpha, {
       value: 0,
       duration: 0.6,

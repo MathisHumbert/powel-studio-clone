@@ -4,6 +4,16 @@
 
 .studio__wrapper {
   @extend %page__wrapper;
+
+  padding-bottom: 2vmin;
+
+  @include media('<=desktop') {
+    padding-bottom: 5vmin;
+  }
+
+  @include media('<=phone') {
+    padding-bottom: calc(5vmin + 50px);
+  }
 }
 
 .studio__wrapper section {
@@ -13,9 +23,10 @@
   &:first-child {
     padding: 117px 0 110px;
   }
-}
 
-.studio__info {
+  @include media('<=phone') {
+    flex-direction: column;
+  }
 }
 
 .studio__left__column {
@@ -26,6 +37,10 @@
 
 .studio__left__title {
   @extend %description-12;
+
+  @include media('<=phone') {
+    margin-bottom: 2em;
+  }
 }
 
 .studio__right__column {
@@ -34,12 +49,20 @@
   padding: 0 25px;
 
   &--grid {
+    @extend %description-12;
+
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-column-gap: 50px;
-    margin-bottom: 5.9em;
+    padding-bottom: 5.9em;
 
-    @extend %description-12;
+    @include media('<=desktop') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media('<=phone') {
+      padding-bottom: 0;
+    }
   }
 }
 
@@ -51,9 +74,6 @@
   gap: 0.9em;
 }
 
-.studio__list {
-}
-
 .studio__list__wrapper {
   max-width: 237px;
 }
@@ -61,18 +81,21 @@
 .studio__list__subtitle {
   min-height: 2.95em;
   max-width: 155px;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .studio__list__items {
   margin-right: -40px;
 
+  @include media('<=desktop') {
+    margin-bottom: 3rem;
+  }
+
   p {
     @extend %description-12;
-  }
-}
 
-.studio__awards {
+    min-height: 12px;
+  }
 }
 
 .studio__awards__wrapper {
@@ -80,12 +103,16 @@
 }
 .studio__awards__items {
   margin-right: -40px;
+
+  @include media('<=desktop') {
+    margin-bottom: 3rem;
+  }
 }
 
 .studio__colophon {
   @extend %description-12;
 
-  padding-bottom: 5.9em;
+  padding-bottom: 8em;
 }
 
 .studio__colophon__item {
@@ -96,7 +123,7 @@
 
 .studio__colophon__subtitle {
   max-width: 155px;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .studio__colophon__text {

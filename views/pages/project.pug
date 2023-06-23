@@ -6,31 +6,32 @@ block variables
 block content
   .project(data-background=project.data.background_color data-color=project.data.text_color)
     .project__wrapper#wrapper
-      section.project__gallery
-        .project__gallery__wrapper
-          each gallery, index in project.data.body
-            if index == 0
-                each media in gallery.items 
-                  article.project__gallery__item
-                    figure.project__gallery__media 
-                      img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
-                    p.project__gallery__text=media.text
-            if index !== 0
-              .project__gallery__row 
+      .project__flex
+        section.project__gallery
+          .project__gallery__wrapper
+            each gallery, index in project.data.body
+              if index == 0
                   each media in gallery.items 
-                    .project__galerry__col
-                      if media.image.url != undefined
-                        article.project__gallery__item
-                            figure.project__gallery__media 
-                              img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
-                            p.project__gallery__text=media.text
-        a.project__gallery__link(href=Link(project.data.next_link))=`next project : ${project.data.next_text}`
-      section.project__content
-        .project__content__wrapper
-          h1.project__content__title(data-animation="inner-title")=project.data.name
-          p.project__content__text.project__content__text--category(data-animation="inner-title")=project.data.category
-          p.project__content__text.project__content__text--description(data-animation="inner-title")=project.data.description
-          .project__content__details 
-            each detail in project.data.details
-              .project__content__text!=PrismicH.asHTML(detail.text).replace(/<p>/g, '<p data-animation="inner-title">')
+                    article.project__gallery__item
+                      figure.project__gallery__media 
+                        img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
+                      p.project__gallery__text=media.text
+              if index !== 0
+                .project__gallery__row 
+                    each media in gallery.items 
+                      .project__galerry__col
+                        if media.image.url != undefined
+                          article.project__gallery__item
+                              figure.project__gallery__media 
+                                img.project__gallery__media__image(src=media.image.url, alt=media.image.alt)
+                              p.project__gallery__text=media.text
+          a.project__gallery__link(href=Link(project.data.next_link))=`next project : ${project.data.next_text}`
+        section.project__content
+          .project__content__wrapper
+            h1.project__content__title(data-animation="inner-title")=project.data.name
+            p.project__content__text.project__content__text--category(data-animation="inner-title")=project.data.category
+            p.project__content__text.project__content__text--description(data-animation="inner-title")=project.data.description
+            .project__content__details 
+              each detail in project.data.details
+                .project__content__text!=PrismicH.asHTML(detail.text).replace(/<p>/g, '<p data-animation="inner-title">')
       include ../layouts/footer

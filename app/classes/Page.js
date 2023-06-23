@@ -83,21 +83,21 @@ export default class Page {
   createAnimations() {
     this.animations = [];
 
-    this.animationsTitles = map(
-      this.elements.animationsTitles,
-      (element, index) => {
-        return new Title({ element, index });
-      }
-    );
+    // this.animationsTitles = map(
+    //   this.elements.animationsTitles,
+    //   (element, index) => {
+    //     return new Title({ element, index });
+    //   }
+    // );
 
-    if (this.elements.animationsInnerTitles !== null) {
-      this.animationsInnerTitles = new InnerTitle({
-        element: document.documentElement,
-        elements: { title: this.elements.animationsInnerTitles },
-      });
+    // if (this.elements.animationsInnerTitles !== null) {
+    //   this.animationsInnerTitles = new InnerTitle({
+    //     element: document.documentElement,
+    //     elements: { title: this.elements.animationsInnerTitles },
+    //   });
 
-      this.animations.push(this.animationsInnerTitles);
-    }
+    //   this.animations.push(this.animationsInnerTitles);
+    // }
 
     each(this.elements.animationsContainers, (element, index) => {
       return new Text({
@@ -109,7 +109,7 @@ export default class Page {
       });
     });
 
-    this.animations.push(...this.animationsTitles);
+    // this.animations.push(...this.animationsTitles);
   }
 
   /**

@@ -34,4 +34,16 @@ export default class Project extends Page {
       super.show({});
     }
   }
+
+  onResize() {
+    if (window.innerWidth > 768 && this.elements.scroll === null) {
+      this.elements.scroll = document.querySelector(
+        '.project__content__wrapper'
+      );
+    } else if (window.innerWidth < 768 && this.elements.scroll !== null) {
+      this.elements.scroll = null;
+    }
+
+    super.onResize();
+  }
 }

@@ -104,6 +104,7 @@ app.get('/studio', async (req, res) => {
   const studio = await api.getSingle('studio');
   const defaults = await handleRequest(api);
 
+  studio.data.body.forEach((d) => d.items.forEach((l) => console.log(l)));
   res.render('pages/studio', { ...defaults, studio });
 });
 

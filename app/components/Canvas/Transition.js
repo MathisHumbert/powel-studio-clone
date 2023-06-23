@@ -60,7 +60,7 @@ export default class Transition {
 
   animate(element, onComplete) {
     const tl = gsap.timeline({
-      defaults: { duration: 2, ease: 'linear' },
+      defaults: { duration: 2, ease: 'expo.inOut' },
     });
 
     tl.set(this.mesh.position, {

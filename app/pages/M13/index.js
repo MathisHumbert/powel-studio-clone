@@ -17,16 +17,19 @@ export default class M13 extends Page {
     });
 
     this.transformPrefix = Prefix('transform');
+    this.allowParallax = window.innerWidth > 992;
   }
 
   update(scroll) {
-    each(this.elements.mediaList, (element, index) => {
-      if (index === 0 || index === 2) {
-        element.style[this.transformPrefix] = `translateY(${
-          scroll.current * 0.082
-        }px)`;
-      }
-    });
+    if (this.allowParallax) {
+      each(this.elements.mediaList, (element, index) => {
+        if (index === 0 || index === 2) {
+          element.style[this.transformPrefix] = `translateY(${
+            scroll.current * 0.082
+          }px)`;
+        }
+      });
+    }
 
     super.update();
   }
@@ -44,5 +47,11 @@ export default class M13 extends Page {
     });
 
     super.createAnimations();
+  }
+
+  onResize() {
+    this.allowParallax = window.innerWidth > 992;
+
+    super.onResize();
   }
 }

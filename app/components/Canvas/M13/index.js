@@ -15,6 +15,8 @@ export default class M13 {
     this.logoElement = document.querySelector('.m13__header svg');
     this.headerElement = document.querySelector('.m13__header');
 
+    this.allowParallax = this.screen.width > 992;
+
     this.createGallery();
     this.createLogo();
 
@@ -100,6 +102,8 @@ export default class M13 {
     this.viewport = viewport;
     this.screen = screen;
 
+    this.allowParallax = this.screen.width > 992;
+
     each(this.medias, (media) => {
       if (media && media.onResize) {
         media.onResize({ viewport, screen });
@@ -125,14 +129,16 @@ export default class M13 {
       this.logo.update({ scroll, velocity });
     }
 
-    each(this.groups, (group, index) => {
-      const updatedScroll =
-        (scroll / this.screen.height) * this.viewport.height;
+    if (this.allowParallax) {
+      each(this.groups, (group, index) => {
+        const updatedScroll =
+          (scroll / this.screen.height) * this.viewport.height;
 
-      if (index === 0 || index === 2) {
-        group.position.y = -updatedScroll * 0.082;
-      }
-    });
+        if (index === 0 || index === 2) {
+          group.position.y = -updatedScroll * 0.082;
+        }
+      });
+    }
   }
 
   /**

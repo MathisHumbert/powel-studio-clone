@@ -15,6 +15,8 @@ export default class Home {
     this.logoElement = document.querySelector('.home__header svg');
     this.headerElement = document.querySelector('.home__header');
 
+    this.allowParallax = this.screen.width > 992;
+
     this.createGallery();
     this.createLogo();
 
@@ -104,6 +106,8 @@ export default class Home {
     this.viewport = viewport;
     this.screen = screen;
 
+    this.allowParallax = this.screen.width > 992;
+
     each(this.medias, (media) => {
       if (media && media.onResize) {
         media.onResize({ viewport, screen });
@@ -129,18 +133,20 @@ export default class Home {
       this.logo.update({ scroll, velocity });
     }
 
-    each(this.groups, (group, index) => {
-      const updatedScroll =
-        (scroll / this.screen.height) * this.viewport.height;
+    if (this.allowParallax) {
+      each(this.groups, (group, index) => {
+        const updatedScroll =
+          (scroll / this.screen.height) * this.viewport.height;
 
-      if (index === 0) {
-        group.position.y = -updatedScroll * 0.075;
-      } else if (index === 1) {
-        group.position.y = -updatedScroll * 0.15;
-      } else {
-        group.position.y = -updatedScroll * 0.075;
-      }
-    });
+        if (index === 0) {
+          group.position.y = -updatedScroll * 0.075;
+        } else if (index === 1) {
+          group.position.y = -updatedScroll * 0.15;
+        } else {
+          group.position.y = -updatedScroll * 0.075;
+        }
+      });
+    }
   }
 
   /**

@@ -5,16 +5,29 @@
 .project__wrapper {
   @extend %page__wrapper;
 
+  padding-top: 70px;
+  padding-bottom: 5vmin;
+
+  @include media('<=phone') {
+    padding-top: 50px;
+    padding-bottom: calc(5vmin + 50px);
+  }
+}
+
+.project__flex {
   display: flex;
-  flex-wrap: wrap;
-  padding-top: 182px;
-  padding-bottom: 20vmin;
+  padding-top: 120px;
+  padding-bottom: 10vmin;
+
+  @include media('<=phone') {
+    padding-top: 70px;
+    flex-direction: column-reverse;
+  }
 }
 
 .project__gallery {
   width: 100%;
   padding: 0 25px;
-
   flex: 0 0 75%;
 }
 
@@ -24,8 +37,11 @@
 
 .project__gallery__row {
   display: flex;
-  flex-grow: wrap;
-  margin: 0 -25px;
+  padding: 0 -25px;
+
+  @include media('<=tablet') {
+    flex-direction: column;
+  }
 }
 
 .project__galerry__col {
@@ -35,7 +51,7 @@
 }
 
 .project__gallery__item {
-  margin-bottom: 50px;
+  padding-bottom: 50px;
 }
 
 .project__gallery__media {
@@ -56,7 +72,7 @@
   @extend %description-12;
 
   display: inline-block;
-  margin-top: 7px;
+  padding-top: 7px;
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
@@ -70,7 +86,13 @@
 .project__gallery__link {
   @extend %description-12;
 
+  display: block;
   position: relative;
+  padding-bottom: 10vmin;
+
+  @include media('<=desktop') {
+    padding-bottom: 20vmin;
+  }
 
   &::before {
     @extend %round-dot-blink;
@@ -81,6 +103,11 @@
   width: 100%;
   flex: 0 0 25%;
   padding: 0 25px;
+
+  @include media('<=phone') {
+    flex: 0 0 100%;
+    padding-bottom: 20vmin;
+  }
 }
 
 .project__content__wrapper {
@@ -92,18 +119,18 @@
 .project__content__title {
   @extend %description-12;
 
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .project__content__text {
   @extend %description-12;
 
   &--category {
-    margin: 2.7em 0;
+    padding: 2.7em 0;
   }
 
   &--description {
-    margin-bottom: 1rem;
+    padding-bottom: 1rem;
   }
 }
 

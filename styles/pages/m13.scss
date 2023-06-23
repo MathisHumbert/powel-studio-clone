@@ -5,8 +5,17 @@
 .m13__wrapper {
   @extend %page__wrapper;
 
-  padding-top: 62px;
+  padding-top: 70px;
   padding-bottom: 60vmin;
+
+  @include media('<=desktop') {
+    padding-bottom: 5vmin;
+  }
+
+  @include media('<=phone') {
+    padding-top: 62px;
+    padding-bottom: calc(5vmin + 50px);
+  }
 }
 
 .m13__header {
@@ -17,6 +26,11 @@
   min-height: 80vh;
   width: calc(100% + 20px);
   z-index: 10;
+
+  @include media('<=desktop') {
+    min-height: inherit;
+    width: 100%;
+  }
 
   h1 {
     @extend %description-12;
@@ -31,6 +45,10 @@
     visibility: hidden;
     height: auto;
     width: calc(100% + 20px);
+
+    @include media('<=desktop') {
+      width: 100%;
+    }
   }
 }
 
@@ -39,6 +57,14 @@
   flex-wrap: wrap;
   padding-top: 43vmin;
   padding-bottom: 2vmin;
+
+  @include media('<=tablet') {
+    padding-bottom: 20vmin;
+  }
+
+  @include media('<=phone') {
+    padding-top: 83vmin;
+  }
 }
 
 .m13__project__list {
@@ -48,23 +74,62 @@
   flex: 0 0 25%;
   padding: 0 25px;
 
+  @include media('<=tablet') {
+    flex: 0 0 75%;
+  }
+
+  @include media('<=phone') {
+    flex: 0 0 100%;
+  }
+
   &:nth-child(1) {
     margin-top: -65px;
+
+    margin-left: 0;
+
+    @include media('<=tablet') {
+      margin-top: 0;
+      margin-left: 12.5%;
+    }
+
+    @include media('<=phone') {
+      margin-left: 0;
+    }
   }
 
   &:nth-child(2) {
     margin-top: 294px;
     margin-left: 12.5%;
+
+    @include media('<=tablet') {
+      margin-top: 0;
+    }
+
+    @include media('<=phone') {
+      margin-left: 0;
+    }
   }
 
   &:nth-child(3) {
     margin-top: 27px;
     margin-left: 12.5%;
+
+    @include media('<=tablet') {
+      margin-top: 0;
+    }
+
+    @include media('<=phone') {
+      margin-left: 0;
+    }
   }
 }
 
 .m13__project__item {
   margin-bottom: 250px;
+
+  @include media('<=tablet') {
+    padding-bottom: 100px;
+  }
 }
 
 .m13__project__media {

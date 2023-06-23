@@ -15,25 +15,34 @@ export default class Home extends Page {
     });
 
     this.transformPrefix = Prefix('transform');
+    this.allowParallax = window.innerWidth > 992;
   }
 
   update(scroll) {
-    each(this.elements.mediaList, (element, index) => {
-      if (index === 0) {
-        element.style[this.transformPrefix] = `translateY(${
-          scroll.current * 0.075
-        }px)`;
-      } else if (index === 1) {
-        element.style[this.transformPrefix] = `translateY(${
-          scroll.current * 0.15
-        }px)`;
-      } else {
-        element.style[this.transformPrefix] = `translateY(${
-          scroll.current * 0.075
-        }px)`;
-      }
-    });
+    if (this.allowParallax) {
+      each(this.elements.mediaList, (element, index) => {
+        if (index === 0) {
+          element.style[this.transformPrefix] = `translateY(${
+            scroll.current * 0.075
+          }px)`;
+        } else if (index === 1) {
+          element.style[this.transformPrefix] = `translateY(${
+            scroll.current * 0.15
+          }px)`;
+        } else {
+          element.style[this.transformPrefix] = `translateY(${
+            scroll.current * 0.075
+          }px)`;
+        }
+      });
+    }
 
     super.update();
+  }
+
+  onResize() {
+    this.allowParallax = window.innerWidth > 992;
+
+    super.onResize();
   }
 }

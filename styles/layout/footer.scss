@@ -1,6 +1,9 @@
 .footer {
-  margin-top: 250px;
   display: none;
+
+  @include media('<=desktop') {
+    display: block;
+  }
 }
 
 .footer__wrapper {
@@ -9,12 +12,17 @@
 
 .footer__list {
   display: flex;
+
+  @include media('<=phone') {
+    flex-direction: column;
+  }
 }
 
 .footer__list__item {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .footer__list__item a {
