@@ -6,5 +6,11 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [{ "src": "/(.*)", "dest": "app.js" }]
+  "routes": [{ "src": "/(.*)", "dest": "app.js" }],
+  "env": {
+    "PRISMIC_ENDPOINT": "@prismic-endpoint",
+    "PRISMIC_ACCESS_TOKEN": "@prismic-access-token",
+    "PRISMIC_CLIENT_ID": "@prismic-client-id",
+    "PRISMIC_CLIENT_SECRET": "@prismic-client-secret"
+  }
 }
