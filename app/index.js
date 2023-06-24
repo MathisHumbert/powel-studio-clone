@@ -239,11 +239,24 @@ class App {
     const links = document.querySelectorAll('a');
 
     each(links, (link) => {
-      link.onclick = (e) => {
-        e.preventDefault();
+      const isLocal = link.href.indexOf(window.location.origin) > -1;
 
-        this.onChange({ url: link.href, push: true });
-      };
+      const isNotEmail = link.href.indexOf('mailto') === -1;
+      const isNotPhone = link.href.indexOf('tel') === -1;
+
+      if (isLocal) {
+        link.onclick = (event) => {
+          event.preventDefault();
+
+          this.onChange({
+            url: link.href,
+            push: true,
+          });
+        };
+      } else if (isNotEmail && isNotPhone) {
+        link.rel = 'noopener';
+        link.target = '_blank';
+      }
     });
   }
 }
