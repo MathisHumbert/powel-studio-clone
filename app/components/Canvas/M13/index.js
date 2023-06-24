@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import Media from '../Gallery/Media';
 import Logo from '../Gallery/Logo';
+import detection from 'classes/Detection';
 
 export default class M13 {
   constructor({ scene, viewport, screen, geometry }) {
@@ -16,6 +17,7 @@ export default class M13 {
     this.headerElement = document.querySelector('.m13__header');
 
     this.allowParallax = this.screen.width > 992;
+    this.isDesktop = detection.checkIsDesktop();
 
     this.createGallery();
     this.createLogo();
@@ -48,6 +50,7 @@ export default class M13 {
           viewport: this.viewport,
           screen: this.screen,
           geometry: this.geometry,
+          isDesktop: this.isDesktop,
         });
 
         this.medias.push(media);
@@ -58,14 +61,16 @@ export default class M13 {
   }
 
   createLogo() {
-    this.logo = new Logo({
-      element: this.logoElement,
-      headerElement: this.headerElement,
-      scene: this.scene,
-      viewport: this.viewport,
-      screen: this.screen,
-      geometry: this.geometry,
-    });
+    if (this.isDesktop) {
+      this.logo = new Logo({
+        element: this.logoElement,
+        headerElement: this.headerElement,
+        scene: this.scene,
+        viewport: this.viewport,
+        screen: this.screen,
+        geometry: this.geometry,
+      });
+    }
   }
 
   /**

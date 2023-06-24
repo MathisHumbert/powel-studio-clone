@@ -10,7 +10,6 @@ html {
 
   position: fixed;
   overflow: hidden;
-
   will-change: background, color;
 }
 
@@ -42,8 +41,5 @@ canvas {
 }
 
 .line {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-100%);
   will-change: transform, opacity, visibility;
 }

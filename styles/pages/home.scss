@@ -35,7 +35,6 @@
   }
 
   svg {
-    visibility: hidden;
     width: calc(100% + 20px);
     height: auto;
     margin-left: -20px;
@@ -153,12 +152,21 @@
 
   display: inline-block;
   padding-top: 9px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
 }
 
-.home__project__link:hover + .home__project__title {
-  opacity: 1;
-  transform: translateY(0);
+.desktop {
+  .home__project__title {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
+  }
+
+  .home__project__link:hover + .home__project__title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home__header svg {
+    visibility: hidden;
+  }
 }

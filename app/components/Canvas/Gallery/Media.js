@@ -5,7 +5,16 @@ import vertex from 'shaders/gallery-vertex.glsl';
 import fragment from 'shaders/gallery-fragment.glsl';
 
 export default class Media {
-  constructor({ element, index, scene, viewport, screen, geometry, onClick }) {
+  constructor({
+    element,
+    index,
+    scene,
+    viewport,
+    screen,
+    geometry,
+    onClick,
+    isDesktop,
+  }) {
     this.element = element;
     this.index = index;
     this.scene = scene;
@@ -13,13 +22,13 @@ export default class Media {
     this.screen = screen;
     this.geometry = geometry;
     this.onClick = onClick;
+    this.isDesktop = isDesktop;
 
     this.createTexture();
     this.createMaterial();
     this.createMesh();
-    this.onMouseEnter();
-    this.onMouseLeave();
-    this.onMouseClick();
+
+    this.addEventsListeners();
   }
 
   /**
@@ -48,7 +57,7 @@ export default class Media {
         },
         uPlaneSizes: { value: new THREE.Vector2(0, 0) },
         uVelocity: { value: 0 },
-        uHover: { value: 0 },
+        uHover: { value: this.isDesktop ? 0 : 1 },
         uAlpha: { value: 0 },
       },
     });
@@ -126,23 +135,26 @@ export default class Media {
     this.createBounds();
   }
 
+  addEventsListeners() {
+    if (this.isDesktop) {
+      this.element.addEventListener('mouseenter', this.onMouseEnter.bind(this));
+      this.element.addEventListener('mouseleave', this.onMouseLeave.bind(this));
+    }
+
+    this.element.addEventListener('click', this.onMouseClick.bind(this));
+  }
+
   onMouseEnter() {
-    this.element.addEventListener('mouseenter', () => {
-      gsap.to(this.material.uniforms.uHover, { value: 1 });
-    });
+    gsap.to(this.material.uniforms.uHover, { value: 1 });
   }
 
   onMouseLeave() {
-    this.element.addEventListener('mouseleave', () => {
-      gsap.to(this.material.uniforms.uHover, { value: 0 });
-    });
+    gsap.to(this.material.uniforms.uHover, { value: 0 });
   }
 
   onMouseClick() {
     if (this.onClick !== undefined) {
-      this.element.addEventListener('click', () => {
-        this.onClick(this);
-      });
+      this.onClick(this);
     }
   }
 

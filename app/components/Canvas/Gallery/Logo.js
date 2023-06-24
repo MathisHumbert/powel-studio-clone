@@ -28,13 +28,9 @@ export default class Logo {
    * Create.
    */
   createTexture() {
-    const textureLoader = new THREE.TextureLoader();
-
     const src = this.element.getAttribute('data-src');
 
-    textureLoader.load(src, (texture) => {
-      this.material.uniforms.uTexture.value = texture;
-    });
+    this.texture = window.TEXTURES[src];
   }
 
   createMaterial() {
@@ -42,7 +38,7 @@ export default class Logo {
       fragmentShader: fragment,
       vertexShader: vertex,
       uniforms: {
-        uTexture: { value: null },
+        uTexture: { value: this.texture },
         uMouse: { value: this.mouse },
         uAlpha: { value: 0 },
         uRes: {

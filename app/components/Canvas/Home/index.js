@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import Media from '../Gallery/Media';
 import Logo from '../Gallery/Logo';
+import detection from 'classes/Detection';
 
 export default class Home {
   constructor({ scene, viewport, screen, geometry }) {
@@ -16,6 +17,7 @@ export default class Home {
     this.headerElement = document.querySelector('.home__header');
 
     this.allowParallax = this.screen.width > 992;
+    this.isDesktop = detection.checkIsDesktop();
 
     this.createGallery();
     this.createLogo();
@@ -52,6 +54,7 @@ export default class Home {
             this.transitionElement = element;
             this.transitionElement.mesh.position.y += group.position.y;
           },
+          isDesktop: this.isDesktop,
         });
 
         this.medias.push(media);
@@ -62,14 +65,16 @@ export default class Home {
   }
 
   createLogo() {
-    this.logo = new Logo({
-      element: this.logoElement,
-      headerElement: this.headerElement,
-      scene: this.scene,
-      viewport: this.viewport,
-      screen: this.screen,
-      geometry: this.geometry,
-    });
+    if (this.isDesktop) {
+      this.logo = new Logo({
+        element: this.logoElement,
+        headerElement: this.headerElement,
+        scene: this.scene,
+        viewport: this.viewport,
+        screen: this.screen,
+        geometry: this.geometry,
+      });
+    }
   }
 
   /**
@@ -153,7 +158,9 @@ export default class Home {
    * Destroy.
    */
   destroy() {
-    this.logo.mesh.removeFromParent();
+    if (this.logo) {
+      this.logo.mesh.removeFromParent();
+    }
 
     each(this.groups, (group) => {
       group.clear();

@@ -24,7 +24,15 @@ export default class Preloader extends Component {
   }
 
   preload(content, onLoaded) {
-    const images = content.querySelectorAll('img');
+    const powellImage = new Image();
+    powellImage.crossOrigin = 'anonymous';
+    powellImage.src = 'powell-studio.png';
+
+    const m13Image = new Image();
+    m13Image.crossOrigin = 'anonymous';
+    m13Image.src = 'm13.png';
+
+    const images = [...content.querySelectorAll('img'), powellImage, m13Image];
 
     this.loadedTextureUrl.push(window.location.pathname);
 
@@ -35,7 +43,8 @@ export default class Preloader extends Component {
     const loadTextures = Promise.all(
       map(images, (image) => {
         return new Promise((res) => {
-          const src = image.getAttribute('src');
+          const src =
+            image.getAttribute('src') || image.getAttribute('data-src');
           this.textureLoader.load(src, (texture) => {
             window.TEXTURES[src] = texture;
 
@@ -46,44 +55,41 @@ export default class Preloader extends Component {
     );
 
     Promise.all([loadImages, loadTextures]).then(() => {
-      gsap.set(this.element, { autoAlpha: 0 });
-      onLoaded();
+      const tl = gsap.timeline({
+        onStart: () => {
+          this.elements.number.innerText = `0%`;
+        },
+      });
 
-      // const tl = gsap.timeline({
-      //   onStart: () => {
-      //     this.elements.number.innerText = `0%`;
-      //   },
-      // });
-
-      // tl.to(this.elements.layer, { scaleY: 0, duration: 3, ease: 'linear' })
-      //   .to(
-      //     this.elements.number,
-      //     {
-      //       innerText: 100,
-      //       duration: 3,
-      //       ease: 'linear',
-      //       modifiers: {
-      //         innerText: function (innerText) {
-      //           return gsap.utils.snap(1, innerText).toString() + '%';
-      //         },
-      //       },
-      //     },
-      //     0
-      //   )
-      //   .set(
-      //     [this.elements.title, this.elements.number],
-      //     { color: '#fff' },
-      //     1.5
-      //   )
-      //   .set(
-      //     this.elements.circle,
-      //     {
-      //       borderColor: '#fff #fff transparent transparent',
-      //     },
-      //     1.5
-      //   )
-      //   .to(this.element, { autoAlpha: 0, duration: 0.5 }, '+=0.1')
-      //   .call(() => onLoaded(), null, '+=0.1');
+      tl.to(this.elements.layer, { scaleY: 0, duration: 3, ease: 'linear' })
+        .to(
+          this.elements.number,
+          {
+            innerText: 100,
+            duration: 3,
+            ease: 'linear',
+            modifiers: {
+              innerText: function (innerText) {
+                return gsap.utils.snap(1, innerText).toString() + '%';
+              },
+            },
+          },
+          0
+        )
+        .set(
+          [this.elements.title, this.elements.number],
+          { color: '#fff' },
+          1.5
+        )
+        .set(
+          this.elements.circle,
+          {
+            borderColor: '#fff #fff transparent transparent',
+          },
+          1.5
+        )
+        .to(this.element, { autoAlpha: 0, duration: 0.5 }, '+=0.1')
+        .call(() => onLoaded(), null, '+=0.1');
     });
   }
 

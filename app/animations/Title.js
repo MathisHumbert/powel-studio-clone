@@ -10,26 +10,23 @@ export default class Title extends Animation {
 
     this.splitElement = new SplitType(element, {
       types: 'lines',
+      tagName: 'span',
     });
 
-    this.isAnimated = false;
+    gsap.set(this.splitElement.lines, { autoAlpha: 0, yPercent: 100 });
   }
 
   animateIn() {
     if (this.isAnimated) return;
 
-    gsap.fromTo(
-      this.splitElement.lines,
-      { yPercent: 100, autoAlpha: 0 },
-      {
-        yPercent: 0,
-        autoAlpha: 1,
-        stagger: 0.075,
-        ease: 'custom-ease',
-        delay: this.index * 0.35,
-        onComplete: () => (this.isAnimated = true),
-      }
-    );
+    gsap.to(this.splitElement.lines, {
+      yPercent: 0,
+      autoAlpha: 1,
+      stagger: 0.075,
+      ease: 'custom-ease',
+      delay: this.index * 0.35 + 0.1,
+      onComplete: () => (this.isAnimated = true),
+    });
   }
 
   onResize() {

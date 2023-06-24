@@ -14,10 +14,11 @@ const PrismicH = require('@prismicio/helpers');
 const app = express();
 const port = 3000;
 
-app.use(errorHandler());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(errorHandler());
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -62,9 +63,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 const handleRequest = async (api) => {
-  // const meta = await api.getSingle('meta');
-  // const preloader = await api.getSingle('preloader');
-
   const navigation = await api.getByUID('navigation', 'nav');
   const footer = await api.getByUID('navigation', 'footer');
 
@@ -104,7 +102,6 @@ app.get('/studio', async (req, res) => {
   const studio = await api.getSingle('studio');
   const defaults = await handleRequest(api);
 
-  studio.data.body.forEach((d) => d.items.forEach((l) => console.log(l)));
   res.render('pages/studio', { ...defaults, studio });
 });
 

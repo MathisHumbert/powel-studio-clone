@@ -151,12 +151,21 @@
 
   display: inline-block;
   margin-top: 9px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
 }
 
-.m13__project__media:hover + .m13__project__title {
-  opacity: 1;
-  transform: translateY(0);
+.desktop {
+  .m13__project__title {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.6s cubic-bezier(0, 0.5, 0.5, 1);
+  }
+
+  .m13__project__media:hover + .m13__project__title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .m13__header svg {
+    visibility: hidden;
+  }
 }

@@ -1,49 +1,34 @@
 import SplitType from 'split-type';
-import { map, each } from 'lodash';
 import { gsap } from 'gsap';
 
 import Animation from 'classes/Animation';
-export default class InnerTitle extends Animation {
-  constructor({ element, elements }) {
+
+export default class Title extends Animation {
+  constructor({ element, elements, index }) {
     super({ element, elements });
+    this.index = index;
 
-    this.element = element;
-
-    this.splitElementsLines = [];
-
-    this.splitElements = map(elements.title, (element) => {
-      const splitElement = new SplitType(element, {
-        types: 'lines',
-      });
-
-      this.splitElementsLines.push(splitElement.lines);
-
-      return splitElement;
+    this.splitElement = new SplitType(element, {
+      types: 'lines',
+      tagName: 'span',
     });
 
-    this.isAnimated = false;
+    gsap.set(this.splitElement.lines, { autoAlpha: 0, yPercent: 100 });
   }
 
   animateIn() {
     if (this.isAnimated) return;
 
-    gsap.fromTo(
-      this.splitElementsLines,
-      { yPercent: 100, autoAlpha: 0 },
-      {
-        yPercent: 0,
-        autoAlpha: 1,
-        ease: 'custom-ease',
-        delay: 0.1,
-        stagger: 0.05,
-        onComplete: () => (this.isAnimated = true),
-      }
-    );
+    gsap.to(this.splitElement.lines, {
+      yPercent: 0,
+      autoAlpha: 1,
+      ease: 'custom-ease',
+      delay: this.index * 0.05 + 0.2,
+      onComplete: () => (this.isAnimated = true),
+    });
   }
 
   onResize() {
-    if (this.isAnimated) {
-      each(this.splitElements, (element) => element.split());
-    }
+    this.splitElement.split();
   }
 }

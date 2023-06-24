@@ -5,6 +5,7 @@ import Prefix from 'prefix';
 import normalizeWheel from 'normalize-wheel';
 
 import { ColorsManager } from 'classes/Colors';
+import detection from 'classes/Detection';
 import Title from 'animations/Title';
 import Text from 'animations/Text';
 import InnerTitle from 'animations/InnerTitle';
@@ -37,7 +38,7 @@ export default class Page {
 
     this.transformPrefix = Prefix('transform');
 
-    this.isDesktop = document.body.classList.contains('desktop');
+    this.isDesktop = detection.checkIsDesktop();
   }
 
   create() {
@@ -83,21 +84,19 @@ export default class Page {
   createAnimations() {
     this.animations = [];
 
-    // this.animationsTitles = map(
-    //   this.elements.animationsTitles,
-    //   (element, index) => {
-    //     return new Title({ element, index });
-    //   }
-    // );
+    this.animationsTitles = map(
+      this.elements.animationsTitles,
+      (element, index) => {
+        return new Title({ element, index });
+      }
+    );
 
-    // if (this.elements.animationsInnerTitles !== null) {
-    //   this.animationsInnerTitles = new InnerTitle({
-    //     element: document.documentElement,
-    //     elements: { title: this.elements.animationsInnerTitles },
-    //   });
-
-    //   this.animations.push(this.animationsInnerTitles);
-    // }
+    this.animationsInnerTitles = map(
+      this.elements.animationsInnerTitles,
+      (element, index) => {
+        return new InnerTitle({ element, index });
+      }
+    );
 
     each(this.elements.animationsContainers, (element, index) => {
       return new Text({
@@ -109,7 +108,10 @@ export default class Page {
       });
     });
 
-    // this.animations.push(...this.animationsTitles);
+    this.animations.push(
+      ...this.animationsTitles,
+      ...this.animationsInnerTitles
+    );
   }
 
   /**

@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger, CustomEase } from 'gsap/all';
 import each from 'lodash/each';
+import FontFaceObserver from 'fontfaceobserver';
 
 import Home from 'pages/Home';
 import Project from 'pages/Project';
@@ -247,4 +248,13 @@ class App {
   }
 }
 
-new App();
+const fontSohneBreitHalbfett = new FontFaceObserver('SohneBreit-Halbfett');
+const fontNBAkademiePro = new FontFaceObserver('NB Akademie Pro');
+
+Promise.all([fontSohneBreitHalbfett.load(), fontNBAkademiePro.load()])
+  .then(() => {
+    new App();
+  })
+  .catch(() => {
+    new App();
+  });

@@ -37,7 +37,7 @@
 
 .project__gallery__row {
   display: flex;
-  padding: 0 -25px;
+  margin: 0 -25px;
 
   @include media('<=tablet') {
     flex-direction: column;
@@ -88,10 +88,10 @@
 
   display: block;
   position: relative;
-  padding-bottom: 10vmin;
+  margin-bottom: 10vmin;
 
   @include media('<=desktop') {
-    padding-bottom: 20vmin;
+    margin-bottom: 20vmin;
   }
 
   &::before {
